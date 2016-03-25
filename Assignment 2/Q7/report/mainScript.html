@@ -1,0 +1,397 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>mainScript</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-17"><meta name="DC.source" content="mainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Part 1: Barbara image and its negative</a></li><li><a href="#3">Part2: Flash and no-flash Image</a></li><li><a href="#4">Observation 1:</a></li><li><a href="#5">Part 3: Incorrect alignment for Barbara</a></li><li><a href="#6">Observation 2: The estimate goes off for large values of translations</a></li></ul></div><pre class="codeinput"><span class="comment">% Image aligment</span>
+
+<span class="comment">% Note: rescaled images to decrease computation requirement</span>
+
+angleRange = -60:1:60;
+transRange = -12:1:12;
+
+M = length(angleRange);
+N = length(transRange);
+</pre><h2>Part 1: Barbara image and its negative<a name="2"></a></h2><pre class="codeinput">disp(<span class="string">'**** 1) Barbara ****'</span>);
+
+img1 = im2double(imread(<span class="string">'../data/barbara.png'</span>));
+img2 = im2double(imread(<span class="string">'../data/negative_barbara.png'</span>));
+
+img2_corrupt = CreateCorruptImage(img2,28.5,-2,true(1));
+
+figure(1)
+imshow(img1);
+title(<span class="string">'Target Image'</span>);
+
+figure(2)
+imshow(img2_corrupt);
+title(<span class="string">'Corrupt Image'</span>);
+
+
+JointEntropy=zeros(M,N);
+
+h = waitbar(0,<span class="string">'Computing joint entropy for all candidates'</span>);
+<span class="keyword">for</span> i=1:M
+    waitbar(i/M);
+    <span class="keyword">for</span> j=1:N
+        candidateImg = CreateCorruptImage(img2_corrupt,angleRange(i),transRange(j),false(1));
+        [~,JointEntropy(i,j)]=GetJointEntropy1(img1,candidateImg);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+close(h);
+
+
+figure(3);
+surf(transRange,angleRange,JointEntropy);
+title(<span class="string">'Joint Entropy'</span>);
+
+figure(4);
+imagesc(transRange,angleRange,JointEntropy);
+title(<span class="string">'Joint Entropy'</span>);
+
+[tempVal,tempIndex] = min(JointEntropy);
+[~,jMin]=min(tempVal);
+iMin = tempIndex(jMin);
+
+
+disp(<span class="string">'Estimated angle - '</span>);
+disp(angleRange(iMin));
+
+disp(<span class="string">'Estimated translation - '</span>);
+disp(transRange(jMin));
+
+
+alignedImage = CreateCorruptImage(img2_corrupt,angleRange(iMin),transRange(jMin),false(1));
+figure(5);
+imshow(alignedImage);
+title(<span class="string">'Aligned Image'</span>);
+</pre><pre class="codeoutput">**** 1) Barbara ****
+Estimated angle - 
+   -28
+
+Estimated translation - 
+     1
+
+</pre><img vspace="5" hspace="5" src="mainScript_01.png" alt=""> <img vspace="5" hspace="5" src="mainScript_02.png" alt=""> <img vspace="5" hspace="5" src="mainScript_03.png" alt=""> <img vspace="5" hspace="5" src="mainScript_04.png" alt=""> <img vspace="5" hspace="5" src="mainScript_05.png" alt=""> <h2>Part2: Flash and no-flash Image<a name="3"></a></h2><pre class="codeinput">disp(<span class="string">'**** 2) Flash and no flash ****'</span>);
+
+img1 = im2double(rgb2gray(imread(<span class="string">'../data/flash.jpg'</span>)));
+img2 = im2double(rgb2gray(imread(<span class="string">'../data/noflash.jpg'</span>)));
+
+img2_corrupt = CreateCorruptImage(img2,28.5,-2,true(1));
+
+figure(6)
+imshow(img1);
+title(<span class="string">'Target Image'</span>);
+
+figure(7)
+imshow(img2_corrupt);
+title(<span class="string">'Corrupt Image'</span>);
+
+
+JointEntropy=zeros(M,N);
+
+h = waitbar(0,<span class="string">'Computing joint entropy for all candidates'</span>);
+<span class="keyword">for</span> i=1:M
+    waitbar(i/M);
+    <span class="keyword">for</span> j=1:N
+        candidateImg = CreateCorruptImage(img2_corrupt,angleRange(i),transRange(j),false(1));
+        [~,JointEntropy(i,j)]=GetJointEntropy1(img1,candidateImg);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+close(h);
+
+
+figure(8);
+surf(transRange,angleRange,JointEntropy);
+title(<span class="string">'Joint Entropy'</span>);
+
+figure(9);
+imagesc(transRange,angleRange,JointEntropy);
+title(<span class="string">'Joint Entropy'</span>);
+
+[tempVal,tempIndex] = min(JointEntropy);
+[~,jMin]=min(tempVal);
+iMin = tempIndex(jMin);
+
+
+disp(<span class="string">'Estimated angle - '</span>);
+disp(angleRange(iMin));
+
+disp(<span class="string">'Estimated translation - '</span>);
+disp(transRange(jMin));
+
+
+alignedImage = CreateCorruptImage(img2_corrupt,angleRange(iMin),transRange(jMin),false(1));
+figure(10);
+imshow(alignedImage);
+</pre><pre class="codeoutput">**** 2) Flash and no flash ****
+Estimated angle - 
+   -28
+
+Estimated translation - 
+     2
+
+</pre><img vspace="5" hspace="5" src="mainScript_06.png" alt=""> <img vspace="5" hspace="5" src="mainScript_07.png" alt=""> <img vspace="5" hspace="5" src="mainScript_08.png" alt=""> <img vspace="5" hspace="5" src="mainScript_09.png" alt=""> <img vspace="5" hspace="5" src="mainScript_10.png" alt=""> <h2>Observation 1:<a name="4"></a></h2><p>The results of aligment is correct for both the case. However, the joint entropy minimization for problem 2 is non-convex, and also not so sharp minimas. This makes the problem susceptible to noise.</p><h2>Part 3: Incorrect alignment for Barbara<a name="5"></a></h2><pre class="codeinput">img1 = im2double(imread(<span class="string">'../data/barbara.png'</span>));
+img2 = im2double(imread(<span class="string">'../data/negative_barbara.png'</span>));
+
+img2_corrupt = CreateCorruptImage(img2,28.5,-70,true(1));
+
+angleRange = -20:1:40;
+transRange = -120:1:120;
+
+M = length(angleRange);
+N = length(transRange);
+
+JointEntropy=zeros(M,N);
+h = waitbar(0,<span class="string">'Computing joint entropy for all candidates'</span>);
+<span class="keyword">for</span> i=1:M
+    waitbar(i/M);
+    <span class="keyword">for</span> j=1:N
+        candidateImg = CreateCorruptImage(img2_corrupt,angleRange(i),transRange(j),false(1));
+        [~,JointEntropy(i,j)]=GetJointEntropy1(img1,candidateImg);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+close(h);
+
+figure(11)
+imshow(img1);
+title(<span class="string">'Target Image'</span>);
+
+figure(12)
+imshow(img2_corrupt);
+title(<span class="string">'Corrupt Image'</span>);
+
+figure(13);
+surf(transRange,angleRange,JointEntropy);
+title(<span class="string">'Joint Entropy; Incorrect estmation'</span>);
+</pre><img vspace="5" hspace="5" src="mainScript_11.png" alt=""> <img vspace="5" hspace="5" src="mainScript_12.png" alt=""> <img vspace="5" hspace="5" src="mainScript_13.png" alt=""> <h2>Observation 2: The estimate goes off for large values of translations<a name="6"></a></h2><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% Image aligment
+
+% Note: rescaled images to decrease computation requirement
+
+angleRange = -60:1:60;
+transRange = -12:1:12;
+
+M = length(angleRange);
+N = length(transRange);
+
+%% Part 1: Barbara image and its negative
+disp('**** 1) Barbara ****');
+
+img1 = im2double(imread('../data/barbara.png'));
+img2 = im2double(imread('../data/negative_barbara.png'));
+
+img2_corrupt = CreateCorruptImage(img2,28.5,-2,true(1));
+
+figure(1)
+imshow(img1);
+title('Target Image');
+
+figure(2)
+imshow(img2_corrupt);
+title('Corrupt Image');
+
+
+JointEntropy=zeros(M,N);
+
+h = waitbar(0,'Computing joint entropy for all candidates');
+for i=1:M
+    waitbar(i/M);
+    for j=1:N
+        candidateImg = CreateCorruptImage(img2_corrupt,angleRange(i),transRange(j),false(1));
+        [~,JointEntropy(i,j)]=GetJointEntropy1(img1,candidateImg);
+    end
+end
+close(h);
+
+
+figure(3);
+surf(transRange,angleRange,JointEntropy);
+title('Joint Entropy');
+
+figure(4);
+imagesc(transRange,angleRange,JointEntropy);
+title('Joint Entropy');
+
+[tempVal,tempIndex] = min(JointEntropy);
+[~,jMin]=min(tempVal);
+iMin = tempIndex(jMin);
+
+
+disp('Estimated angle - ');
+disp(angleRange(iMin));
+
+disp('Estimated translation - ');
+disp(transRange(jMin));
+
+
+alignedImage = CreateCorruptImage(img2_corrupt,angleRange(iMin),transRange(jMin),false(1));
+figure(5);
+imshow(alignedImage);
+title('Aligned Image');
+
+%% Part2: Flash and no-flash Image
+disp('**** 2) Flash and no flash ****');
+
+img1 = im2double(rgb2gray(imread('../data/flash.jpg')));
+img2 = im2double(rgb2gray(imread('../data/noflash.jpg')));
+
+img2_corrupt = CreateCorruptImage(img2,28.5,-2,true(1));
+
+figure(6)
+imshow(img1);
+title('Target Image');
+
+figure(7)
+imshow(img2_corrupt);
+title('Corrupt Image');
+
+
+JointEntropy=zeros(M,N);
+
+h = waitbar(0,'Computing joint entropy for all candidates');
+for i=1:M
+    waitbar(i/M);
+    for j=1:N
+        candidateImg = CreateCorruptImage(img2_corrupt,angleRange(i),transRange(j),false(1));
+        [~,JointEntropy(i,j)]=GetJointEntropy1(img1,candidateImg);
+    end
+end
+close(h);
+
+
+figure(8);
+surf(transRange,angleRange,JointEntropy);
+title('Joint Entropy');
+
+figure(9);
+imagesc(transRange,angleRange,JointEntropy);
+title('Joint Entropy');
+
+[tempVal,tempIndex] = min(JointEntropy);
+[~,jMin]=min(tempVal);
+iMin = tempIndex(jMin);
+
+
+disp('Estimated angle - ');
+disp(angleRange(iMin));
+
+disp('Estimated translation - ');
+disp(transRange(jMin));
+
+
+alignedImage = CreateCorruptImage(img2_corrupt,angleRange(iMin),transRange(jMin),false(1));
+figure(10);
+imshow(alignedImage);
+
+%% Observation 1:
+% The results of aligment is correct for both the case. However, the joint
+% entropy minimization for problem 2 is non-convex, and also not so sharp
+% minimas. This makes the problem susceptible to noise.
+
+%% Part 3: Incorrect alignment for Barbara
+
+img1 = im2double(imread('../data/barbara.png'));
+img2 = im2double(imread('../data/negative_barbara.png'));
+
+img2_corrupt = CreateCorruptImage(img2,28.5,-70,true(1));
+
+angleRange = -20:1:40;
+transRange = -120:1:120;
+
+M = length(angleRange);
+N = length(transRange);
+
+JointEntropy=zeros(M,N);
+h = waitbar(0,'Computing joint entropy for all candidates');
+for i=1:M
+    waitbar(i/M);
+    for j=1:N
+        candidateImg = CreateCorruptImage(img2_corrupt,angleRange(i),transRange(j),false(1));
+        [~,JointEntropy(i,j)]=GetJointEntropy1(img1,candidateImg);
+    end
+end
+close(h);
+
+figure(11)
+imshow(img1);
+title('Target Image');
+
+figure(12)
+imshow(img2_corrupt);
+title('Corrupt Image');
+
+figure(13);
+surf(transRange,angleRange,JointEntropy);
+title('Joint Entropy; Incorrect estmation');
+
+%% Observation 2: The estimate goes off for large values of translations
+
+
+
+##### SOURCE END #####
+--></body></html>

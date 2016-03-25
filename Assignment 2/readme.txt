@@ -1,0 +1,3 @@
+- The pdf 763-assignment-2 contains the solutions of problems 1-5
+- The folder Q6 contains the code and report for problem 7
+- The folder Q7 contains the code and report for problem 7

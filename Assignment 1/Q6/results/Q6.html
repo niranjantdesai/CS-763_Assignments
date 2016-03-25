@@ -1,0 +1,306 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q6</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-02"><meta name="DC.source" content="Q6.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Part1: first dataset (f2D and f3D)</a></li><li><a href="#3">Part2: first dataset (f2D and f3D)</a></li><li><a href="#4">Part 2: Adding Gaussian noise on dataset2</a></li><li><a href="#5">Error analysis for dataset2 with and without noise</a></li></ul></div><pre class="codeinput"><span class="comment">% Code to perform camera calibration and check results</span>
+</pre><h2>Part1: first dataset (f2D and f3D)<a name="2"></a></h2><pre class="codeinput">load(<span class="string">'../Calib_data/Features2D_dataset1.mat'</span>);
+load(<span class="string">'../Calib_data/Features3D_dataset1.mat'</span>);
+
+M = CameraCalib(f2D',f3D');
+
+disp(<span class="string">'Calibration for dataset #1'</span>);
+disp(<span class="string">'M = '</span>);
+disp(M);
+
+<span class="comment">% ** Using the calculated M to project the 3D world coordinates to image</span>
+<span class="comment">% coordinates **</span>
+check = M*(f3D);
+f2D_check = abs([check(1,:)./check(3,:);check(2,:)./check(3,:); <span class="keyword">...</span>
+                ones(1,size(check,2))]);
+
+<span class="comment">% ** Error analysis **</span>
+<span class="comment">% Absolute arror between the given image coordinates and projected</span>
+<span class="comment">% coordinates</span>
+abs_error1 = abs(f2D_check-f2D);
+relative_error1 = abs_error1./f2D;
+
+max_error1=max(max(relative_error1));
+mean_error1=mean(mean(relative_error1(1:2,:)));
+</pre><pre class="codeoutput">Calibration for dataset #1
+M = 
+    0.2905    0.0532   -0.1866   -0.6283
+   -0.0881    0.3264   -0.0881   -0.6010
+   -0.0002   -0.0002   -0.0002    0.0021
+
+</pre><h2>Part2: first dataset (f2D and f3D)<a name="3"></a></h2><pre class="codeinput">load(<span class="string">'../Calib_data/Features2D_dataset2.mat'</span>);
+
+load(<span class="string">'../Calib_data/Features3D_dataset2.mat'</span>);
+
+M = CameraCalib(f2D',f3D');
+
+disp(<span class="string">'Calibration for dataset #2'</span>);
+disp(<span class="string">'M = '</span>);
+disp(M);
+
+<span class="comment">% ** Using the calculated M to project the 3D world coordinates to image</span>
+<span class="comment">% coordinates **</span>
+check = M*(f3D);
+f2D_check = abs([check(1,:)./check(3,:);check(2,:)./check(3,:); <span class="keyword">...</span>
+                ones(1,size(check,2))]);
+
+<span class="comment">% ** Error analysis **</span>
+<span class="comment">% Absolute arror between the given image coordinates and projected</span>
+<span class="comment">% coordinates</span>
+abs_error2 = abs(f2D_check-f2D);
+relative_error2 = abs_error2./f2D;
+
+max_error2=max(max(relative_error2));
+mean_error2=mean(mean(relative_error2(1:2,:)));
+</pre><pre class="codeoutput">Calibration for dataset #2
+M = 
+    0.0087    0.0011   -0.0039    0.9986
+    0.0001    0.0092    0.0005   -0.0520
+   -0.0000   -0.0000   -0.0000   -0.0027
+
+</pre><h2>Part 2: Adding Gaussian noise on dataset2<a name="4"></a></h2><pre class="codeinput">sigma_f3D_X = 0.05*max(f3D(1,:));
+sigma_f3D_Y = 0.05*max(f3D(2,:));
+sigma_f3D_Z = 0.05*max(f3D(3,:));
+
+temp = [1,size(f3D,2)];
+
+noisy_f3D = ones(size(f3D));
+noisy_f3D(1,:) = f3D(1,:) + (sigma_f3D_X)*randn(temp);
+noisy_f3D(2,:) = f3D(2,:) + (sigma_f3D_Y)*randn(temp);
+noisy_f3D(3,:) = f3D(3,:) + (sigma_f3D_Z)*randn(temp);
+
+
+sigma_f2D_X = 0.05*max(f2D(1,:));
+sigma_f2D_Y = 0.05*max(f2D(2,:));
+
+noisy_f2D = ones(size(f2D));
+noisy_f2D(1,:) = f2D(1,:) + (sigma_f2D_X)*randn(temp);
+noisy_f2D(2,:) = f2D(2,:) + (sigma_f2D_Y)*randn(temp);
+
+M = CameraCalib(noisy_f2D',noisy_f3D');
+
+disp(<span class="string">'Calibration for noisy dataset #2'</span>);
+disp(<span class="string">'M = '</span>);
+disp(M);
+
+<span class="comment">% projecting using uncorrupted world coordinates</span>
+check = M*(f3D);
+f2D_check = abs([check(1,:)./check(3,:);check(2,:)./check(3,:); <span class="keyword">...</span>
+                ones(1,size(check,2))]);
+
+<span class="comment">% ** Error analysis **</span>
+<span class="comment">% Absolute arror between the given image coordinates and projected</span>
+<span class="comment">% coordinates</span>
+abs_error3 = abs(f2D_check-f2D);
+relative_error3 = abs_error3./f2D;
+
+max_error3=max(max(relative_error3));
+mean_error3=mean(mean(relative_error3(1:2,:)));
+</pre><pre class="codeoutput">Calibration for noisy dataset #2
+M = 
+   -0.0005    0.0012    0.0036   -0.9573
+    0.0016   -0.0027    0.0012   -0.2891
+   -0.0000   -0.0000   -0.0000    0.0022
+
+</pre><h2>Error analysis for dataset2 with and without noise<a name="5"></a></h2><pre class="codeinput">figure(1)
+histogram(relative_error2(1,:),<span class="string">'Normalization'</span>,<span class="string">'probability'</span>);
+title(<span class="string">'Relative error in x coordinate; Dataset #2, no noise'</span>);
+
+figure(2)
+histogram(relative_error3(1,:),<span class="string">'Normalization'</span>,<span class="string">'probability'</span>);
+title(<span class="string">'Relative error in y coordinate; Dataset #2, no noise'</span>);
+
+figure(3)
+histogram(relative_error2(2,:),<span class="string">'Normalization'</span>,<span class="string">'probability'</span>);
+title(<span class="string">'Relative error in x coordinate; Dataset #2, with noise'</span>);
+
+figure(4)
+histogram(relative_error3(2,:),<span class="string">'Normalization'</span>,<span class="string">'probability'</span>);
+title(<span class="string">'Relative error in y coordinate; Dataset #2, with noise'</span>);
+</pre><img vspace="5" hspace="5" src="Q6_01.png" alt=""> <img vspace="5" hspace="5" src="Q6_02.png" alt=""> <img vspace="5" hspace="5" src="Q6_03.png" alt=""> <img vspace="5" hspace="5" src="Q6_04.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% Code to perform camera calibration and check results
+
+%% Part1: first dataset (f2D and f3D) 
+load('../Calib_data/Features2D_dataset1.mat');
+load('../Calib_data/Features3D_dataset1.mat');
+
+M = CameraCalib(f2D',f3D');
+
+disp('Calibration for dataset #1');
+disp('M = ');
+disp(M);
+
+% ** Using the calculated M to project the 3D world coordinates to image
+% coordinates **
+check = M*(f3D);
+f2D_check = abs([check(1,:)./check(3,:);check(2,:)./check(3,:); ...
+                ones(1,size(check,2))]);
+
+% ** Error analysis **
+% Absolute arror between the given image coordinates and projected 
+% coordinates
+abs_error1 = abs(f2D_check-f2D);
+relative_error1 = abs_error1./f2D;
+
+max_error1=max(max(relative_error1));
+mean_error1=mean(mean(relative_error1(1:2,:)));
+
+%% Part2: first dataset (f2D and f3D) 
+load('../Calib_data/Features2D_dataset2.mat');
+
+load('../Calib_data/Features3D_dataset2.mat');
+
+M = CameraCalib(f2D',f3D');
+
+disp('Calibration for dataset #2');
+disp('M = ');
+disp(M);
+
+% ** Using the calculated M to project the 3D world coordinates to image
+% coordinates **
+check = M*(f3D);
+f2D_check = abs([check(1,:)./check(3,:);check(2,:)./check(3,:); ...
+                ones(1,size(check,2))]);
+
+% ** Error analysis **
+% Absolute arror between the given image coordinates and projected 
+% coordinates
+abs_error2 = abs(f2D_check-f2D);
+relative_error2 = abs_error2./f2D;
+
+max_error2=max(max(relative_error2));
+mean_error2=mean(mean(relative_error2(1:2,:)));
+
+
+%% Part 2: Adding Gaussian noise on dataset2
+sigma_f3D_X = 0.05*max(f3D(1,:));
+sigma_f3D_Y = 0.05*max(f3D(2,:));
+sigma_f3D_Z = 0.05*max(f3D(3,:));
+
+temp = [1,size(f3D,2)];
+
+noisy_f3D = ones(size(f3D));
+noisy_f3D(1,:) = f3D(1,:) + (sigma_f3D_X)*randn(temp);
+noisy_f3D(2,:) = f3D(2,:) + (sigma_f3D_Y)*randn(temp);
+noisy_f3D(3,:) = f3D(3,:) + (sigma_f3D_Z)*randn(temp);
+
+
+sigma_f2D_X = 0.05*max(f2D(1,:));
+sigma_f2D_Y = 0.05*max(f2D(2,:));
+
+noisy_f2D = ones(size(f2D));
+noisy_f2D(1,:) = f2D(1,:) + (sigma_f2D_X)*randn(temp);
+noisy_f2D(2,:) = f2D(2,:) + (sigma_f2D_Y)*randn(temp);
+
+M = CameraCalib(noisy_f2D',noisy_f3D');
+
+disp('Calibration for noisy dataset #2');
+disp('M = ');
+disp(M);
+
+% projecting using uncorrupted world coordinates
+check = M*(f3D);
+f2D_check = abs([check(1,:)./check(3,:);check(2,:)./check(3,:); ...
+                ones(1,size(check,2))]);
+            
+% ** Error analysis **
+% Absolute arror between the given image coordinates and projected 
+% coordinates
+abs_error3 = abs(f2D_check-f2D);
+relative_error3 = abs_error3./f2D;
+
+max_error3=max(max(relative_error3));
+mean_error3=mean(mean(relative_error3(1:2,:)));
+            
+            
+%% Error analysis for dataset2 with and without noise
+
+figure(1)
+histogram(relative_error2(1,:),'Normalization','probability');
+title('Relative error in x coordinate; Dataset #2, no noise');
+
+figure(2)
+histogram(relative_error3(1,:),'Normalization','probability');
+title('Relative error in y coordinate; Dataset #2, no noise');
+
+figure(3)
+histogram(relative_error2(2,:),'Normalization','probability');
+title('Relative error in x coordinate; Dataset #2, with noise');
+
+figure(4)
+histogram(relative_error3(2,:),'Normalization','probability');
+title('Relative error in y coordinate; Dataset #2, with noise');
+
+
+
+##### SOURCE END #####
+--></body></html>
