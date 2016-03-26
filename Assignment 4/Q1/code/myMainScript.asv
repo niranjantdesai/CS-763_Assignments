@@ -43,7 +43,6 @@ scatter(X(y<0,1),X(y<0,2),'+');
 
 % Testing choose_learner
 dist = (1/size(X_training,1))*ones(size(X_training,1),1); % Weight distribution; we give equal weights to all points initially
-[ i_opt,p_opt,theta_opt ] = choose_learner( X_training,y_training,dist )
 % h = -1*ones(size(X,1),1); % vector of labels assigned by the weak classifier
 % theta = linspace(0,1,10);   % search range for theta
 % p = [-1,1];     % search range for p
