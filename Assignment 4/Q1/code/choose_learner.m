@@ -8,16 +8,15 @@ function [ i_opt,p_opt,theta_opt,error_min,h_opt ] = choose_learner( X,y,w )
 %   y -> training labels
 %   w -> column vector containing the weights of all points
 
-h = -1*ones(size(X,1),1); % vector of labels assigned by the weak classifier
-h_opt = -1*ones(size(X,1),1);   % vector of labels assigned by the best classifier
 theta = linspace(0,1,100);   % search range for theta
 p = [-1;1];     % search range for p
-error_curr = 1;
 error_min = 1;
 
 for i=1:size(X,2)
    for j=1:size(theta,2)
       for k=1:size(p)
+          h = -1*ones(size(X,1),1); % vector of labels assigned by the weak classifier
+          h_opt = -1*ones(size(X,1),1);   % vector of labels assigned by the best classifier
           h(p(k)*(X(:,i)-theta(j))>0) = 1;
           idx = y~=h;
           idx = +idx;
@@ -27,7 +26,7 @@ for i=1:size(X,2)
              i_opt = i;
              p_opt = p(k);
              theta_opt = theta(j);
-             h(p_opt*(X(:,i_opt)-theta_opt)>0) = 1;
+             h_opt = h;
           end
       end
    end

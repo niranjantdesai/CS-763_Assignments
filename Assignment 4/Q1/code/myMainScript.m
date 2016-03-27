@@ -40,29 +40,8 @@ figure()
 scatter(X(y>0,1),X(y>0,2),'o');
 hold on;
 scatter(X(y<0,1),X(y<0,2),'+');
+hold off
 
-% Testing choose_learner
-dist = (1/size(X_training,1))*ones(size(X_training,1),1); % Weight distribution; we give equal weights to all points initially
-[ i_opt,p_opt,theta_opt ] = choose_learner( X_training,y_training,dist )
-% h = -1*ones(size(X,1),1); % vector of labels assigned by the weak classifier
-% theta = linspace(0,1,10);   % search range for theta
-% p = [-1,1];     % search range for p
-% error_curr = 1;
-% error_min = 1;
-% error = zeros(size
-% 
-% for i=1:size(X,2)
-%    for j=1:size(theta)
-%       for k=1:size(p)
-%           h(p(k)*(X(:,i)-theta(j))>0) = 1;
-%           idx = y~=h;
-%           error_curr = w'.*idx;
-%           if error_curr<error_min
-%              error_min = error_curr;
-%              i_opt = i;
-%              p_opt = p(k);
-%              theta_opt = theta(j);
-%           end
-%       end
-%    end
-% end
+% Adaboost
+T = 35;
+[ H_training,H_test,i_opt,p_opt,theta_opt ] = adaboost( X_training,X_test,T,y_training,y_test );
