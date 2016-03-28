@@ -1,0 +1,116 @@
+\documentclass{article}
+\title{CS 763: Assignment 3}
+\author{Ayush Baid (12D100002) \\
+Niranjan Thakurdesai (12D100007) \\
+Jainesh Doshi (12D070014)}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[margin=0.5in]{geometry}
+
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+
+\begin{equation}
+I = L\rho \frac{p l_x + q l_y + 1}{\sqrt{l_x^2+l_y^2+1}\sqrt{p^2+q^2+1}}
+\end{equation}
+As the geometry is known, we know $p$ and $q$ at each point. We can eliminate the $L$ and $\rho$ terms which are unknown by dividing the equations of intensities of 2 points.
+\begin{gather}
+\frac{I_i}{I_j} = \frac{p_i l_x + q_i l_y + 1}{p_j l_x + q_j l_y + 1}\frac{\sqrt{p_j^2+q_j^2+1}}{\sqrt{p_i^2+q_i^2+1}} \\
+\begin{aligned}
+\therefore \left(I_i p_j \sqrt{p_i^2+q_i^2+1} - I_j p_i \sqrt{p_j^2+q_j^2+1} \right)l_x + \left(I_i q_j \sqrt{p_i^2+q_i^2+1} - I_j q_i \sqrt{p_j^2+q_j^2+1} \right) = I_j\sqrt{p_j^2+q_j^2+1} - I_i\sqrt{p_i^2+q_i^2+1}
+\end{aligned}
+\end{gather}
+Taking N such pairs of points in the image, we have a system of equations of the form
+\begin{equation}
+\mathbf{A}\mathbf{x} = \mathbf{b}, \mathbf{x} = 
+\begin{pmatrix}
+l_x \\
+l_y \\
+\end{pmatrix}
+\end{equation}
+which can be solved using pseudoinverse:
+\begin{equation}
+\mathbf{x} = (\mathbf{A}^T\mathbf{A})^{-1}b
+\end{equation}
+
+\section*{Problem 2}
+
+\begin{align}
+R(p,q) &= \frac{1+pp_s + qq_s}{\sqrt{1+p^2_s+q^2_s}\sqrt{1+p^2+q^2}} \\
+&= \mathbf{l}^T\mathbf{N}
+\end{align}
+where
+\begin{align}
+\mathbf{l} = \frac{1}{\sqrt{p_s^2+q_s^2+1}}
+\begin{pmatrix}
+-p_s \\
+-q_s \\
+1
+\end{pmatrix} \text{ and }
+\mathbf{N} = \frac{1}{\sqrt{p^2+q^2+1}}
+\begin{pmatrix}
+-p \\
+-q \\
+1
+\end{pmatrix}
+\end{align}
+As $R(p,q)$ is a dot product defined as above, it is maximized when surface normal is parallel to the light source direction, i.e. when $p=p_s$ and $q=q_s$ and it is 0 when $p=-p_s$ and $q=-q_s$.
+
+
+\section*{Problem 3}
+\subsection*{Part (a)}
+
+\subsection*{Part (b)}
+$N(x,y)$ is the unit surface normal vector at the point $(x,y,z)$.
+Thus the rows of $\tilde{N}$ correspondingly equal the expression
+$$ \tilde{N}_i = \rho(x,y)N^T_i(x,y) $$
+Taking the norm of the same we get
+$$ \norm{N_i} = \norm{\rho(x,y)N^T_i(x,y)} = \rho(x,y) $$
+SVD decomposition of I gives us
+$$ I_{M \times K} = U_{M \times 3} S_{3 \times 3} (V_{K \times 3})^T $$
+$$ I_{M \times K} = U_{M \times 3} S^0.5_{3 \times 3} S^0.5_{3 \times 3} (V_{K \times 3})^T $$
+$$ I_{M \times K} = \hat{N} \hat{D} $$
+where $\hat{N} = U_{M \times 3} S^0.5_{3 \times 3}$ and $\hat{D} = S^0.5_{3 \times 3} (V_{K \times 3})^T$ respectively. In this case too the above SVD is unknown upto a $3 \times 3$ invertible matrix Q such that
+$$ I = \hat{N}\hat{D} = \hat{N} Q Q^{-1} \hat{D} = \tilde{N}\tilde{D} $$
+Thus we have to find the matrix Q that has 9 unknowns. \\
+However we have some constraints on the row vectors of the matrix that can be used to obtain the unknowns. The magnitude of the row vector $\tilde{N}_i$ of of the matrix $\tilde{N} = \hat{N}Q$ must be equal to $\rho(x,y)_i$ as proved above. Therefore 
+$$ \norm{\tilde{N}_i} = \norm{(\hat{N}Q)_i} = \hat{N}_iQQ^T\hat{N}^T_i = \rho(x,y)_i $$
+Now as we vary $i$ we can have a system of equations for solving the unknown values of $Q$ if we know the albedo values for the same (solve using Newton Ralphson method). Thus we need a minimum of $m = 9$ equations to uniquely determine the values of the elements of the matrix Q (and thus minimum 9 albedo values).\\
+However even after this step we still can not find uniquely the solution for $\tilde{N}$ and $\tilde{D}$ as there can always be an orthonormal matrix $R$ that will satisfy the constraint that we introduced on the row vectors of $\tilde{N}$
+$$ \norm{(\hat{N}R)_i} = \hat{N}_i R R^T \hat{N}^T_i = \rho(x,y) $$
+Here if we know the surface normal to any one point then we can only uniquely determine the orthonormal matrix and consequently the unique matrices $\tilde{N}$ and $\tilde{D}$\\
+Now for the situation in which we do not know the albedo values at any of the points but only know that they all are equal (to some constant value), we can again decompose the matrix $I$ such that 
+$$ I = \hat{N} \lambda R R^T \lambda^{-1} \hat{D} $$
+where $\lambda$ is a scalar and $R$ is an orthonormal matrix. Hence again can not determine required matrices uniquely.
+
+\subsection*{Part (c)}
+Proceeding in a similar manner as the above section.
+A column of $\tilde{D}$, $\tilde{D}_i$ is the power vector of the $i^{th}$ light source.
+Thus the columns of $\tilde{D}$ correspondingly equal the expression
+$$ \tilde{D}_i = L_i d_i(x,y) $$
+Taking the norm of the same we get
+$$ \norm{D_i} = \norm{L_i d_i(x,y)} = L_i $$
+SVD decomposition of I gives us
+$$ I_{M \times K} = U_{M \times 3} S_{3 \times 3} (V_{K \times 3})^T $$
+$$ I_{M \times K} = U_{M \times 3} S^0.5_{3 \times 3} S^0.5_{3 \times 3} (V_{K \times 3})^T $$
+$$ I_{M \times K} = \hat{N} \hat{D} $$
+where $\hat{N} = U_{M \times 3} S^0.5_{3 \times 3}$ and $\hat{D} = S^0.5_{3 \times 3} (V_{K \times 3})^T$ respectively. In this case too the above SVD is unknown upto a $3 \times 3$ invertible matrix Q such that
+$$ I = \hat{N}\hat{D} = \hat{N} Q^{-1} Q \hat{D} = \tilde{N}\tilde{D} $$
+Thus we have to find the matrix Q that has 9 unknowns and gives $\tilde{D} = Q \hat{D}$. \\
+However we have some constraints on the column vectors of the matrix that can be used to obtain the unknowns. The magnitude of the column vector $\tilde{D}_i$ of of the matrix $\tilde{D} = Q \hat{D}$ must be equal to $L_i$ as proved above. Therefore 
+$$ \norm{\tilde{D}_i} = \norm{(Q \hat{D})_i} = \hat{D}^T_i Q^T Q \hat{D}_i = L_i $$
+Now as we vary $i$ we can have a system of equations for solving the unknown values of $Q$ if we know the intensity values for the same (solve using Newton Ralphson method). Thus we need a minimum of $m = 9$ equations to uniquely determine the values of the elements of the matrix Q (and thus minimum 9 intensity values).\\
+
+However even after this step we still can not find uniquely the solution for $\tilde{N}$ and $\tilde{D}$ as there can always be an orthonormal matrix $R$ that will satisfy the constraint that we introduced on the column vectors of $\tilde{D}$
+$$ \norm{(\hat{D}R)_i} = \hat{D}_i R R^T \hat{D}^T_i = L_i $$
+Here if we know the surface normal to any one point then we can only uniquely determine the orthonormal matrix and consequently the unique matrices $\tilde{N}$ and $\tilde{D}$\\
+Now for the situation in which we do not know the intensity values at any of the points but only know that they all are equal (to some constant value), we can again decompose the matrix $I$ such that 
+$$ I = \hat{N} \lambda R R^T \lambda^{-1} \hat{D} $$
+where $\lambda$ is a scalar and $R$ is an orthonormal matrix. Hence again can not determine required matrices uniquely.
+
+
+\end{document}
