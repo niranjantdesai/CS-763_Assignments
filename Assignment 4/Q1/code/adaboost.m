@@ -26,11 +26,12 @@ i_opt = zeros(T,1);
 p_opt = zeros(T,1);
 theta_opt = zeros(T,1);
 
+% Labels given to the training set by weak learners
+h_training = -1*ones(size(X_training,1),T);
+% Labels given to the training set by weak learners
+h_test = -1*ones(size(X_test,1),T);
+
 for i=1:T
-    % Labels given to the training set by weak learners
-    h_training = -1*ones(size(X_training,1),T);
-    % Labels given to the training set by weak learners
-    h_test = -1*ones(size(X_test,1),T);
     
     % Train a learner from the dataset using distribution dist 
     [ i_opt(i),p_opt(i),theta_opt(i),error_training,h_training(:,i) ] = ...
