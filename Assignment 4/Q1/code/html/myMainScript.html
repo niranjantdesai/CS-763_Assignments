@@ -1,0 +1,1326 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-03-31"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a] generating Dataset 1</a></li><li><a href="#3">a] Adaboost for Dataset 1</a></li><li><a href="#4">a] Plotting for dataset 1</a></li><li><a href="#5">b] Generating Dataset 2</a></li><li><a href="#6">b] Adaboost for Dataset 2</a></li><li><a href="#7">b] Plotting for dataset 2</a></li><li><a href="#8">c] Generating Dataset 3</a></li><li><a href="#9">c] Adaboost for Dataset 3</a></li><li><a href="#10">c] Plotting for dataset 3</a></li><li><a href="#11">d] Generating Dataset 4</a></li><li><a href="#12">d] Adaboost for Dataset 4</a></li><li><a href="#13">d] Plotting for dataset 4</a></li><li><a href="#14">e] Reading the MNIST database</a></li><li><a href="#15">e] Generating training and test sets from the MNIST database</a></li><li><a href="#16">e] Adaboost for MNIST database</a></li><li><a href="#17">e] Plotting for MNIST database</a></li></ul></div><pre class="codeinput"><span class="comment">% CS 763: Assignment 4</span>
+<span class="comment">% 24th March, 2016</span>
+<span class="comment">% Authors: Ayush Baid, Niranjan Thakurdesai, Jainesh Doshi</span>
+
+clc;
+clear;
+close <span class="string">all</span>;
+</pre><h2>a] generating Dataset 1<a name="2"></a></h2><pre class="codeinput">N = 2000;   <span class="comment">% Total number of points</span>
+X = rand(N,2);   <span class="comment">% Each row of X corresponds to a point</span>
+
+<span class="comment">% Label points</span>
+y = zeros(N,1);
+y_training = zeros(N/2,1);
+y_test = zeros(N/2,1);
+<span class="keyword">for</span> i=1:size(X,1)
+   <span class="keyword">if</span> X(i,1)&gt;=0.3 &amp;&amp; X(i,1)&lt;=0.7 &amp;&amp; X(i,2)&gt;=0.3 &amp;&amp; X(i,2)&lt;=0.7
+       y(i) = 1;    <span class="comment">% Point lies inside the rectangle bounded by x=0.3, x=0.7, y=0.3 and y=0.7</span>
+   <span class="keyword">else</span>
+       y(i) = -1;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Divide the dataset into training set and test set</span>
+seq = randperm(N);
+X_training = zeros(N/2,2);
+X_test = zeros(N/2,2);
+<span class="keyword">for</span> i=1:N/2
+   X_training(i,:) = X(seq(i),:);
+   y_training(i,:) = y(seq(i),:);
+   X_test(i,:) = X(seq(N/2+i),:);
+   y_test(i,:) = y(seq(N/2+i),:);
+<span class="keyword">end</span>
+
+<span class="comment">% Plotting the dataset</span>
+figure()
+scatter(X_test(y_test&gt;0,1),X_test(y_test&gt;0,2),<span class="string">'b*'</span>);
+hold <span class="string">on</span>;
+scatter(X_test(y_test&lt;0,1),X_test(y_test&lt;0,2),<span class="string">'r+'</span>);
+hold <span class="string">off</span>
+title(<span class="string">'Test points in dataset 1'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <h2>a] Adaboost for Dataset 1<a name="3"></a></h2><p>close all;</p><pre class="codeinput">T = 40;
+
+disp(<span class="string">'****** Adaboost for Dataset 1 *****'</span>);
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = <span class="keyword">...</span>
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+<span class="comment">% get final classification</span>
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+</pre><pre class="codeoutput">****** Adaboost for Dataset 1 *****
+Training error of the strong classifier = 0.181000 
+Error of the strong classifier on the test set = 0.160000 
+
+Training error of the strong classifier = 0.181000 
+Error of the strong classifier on the test set = 0.160000 
+
+Training error of the strong classifier = 0.181000 
+Error of the strong classifier on the test set = 0.160000 
+
+Training error of the strong classifier = 0.181000 
+Error of the strong classifier on the test set = 0.160000 
+
+Training error of the strong classifier = 0.181000 
+Error of the strong classifier on the test set = 0.160000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.181000 
+Error of the strong classifier on the test set = 0.160000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.181000 
+Error of the strong classifier on the test set = 0.160000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.181000 
+Error of the strong classifier on the test set = 0.160000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.010000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.006000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.010000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.010000 
+
+Training error of the strong classifier = 0.004000 
+Error of the strong classifier on the test set = 0.002000 
+
+Training error of the strong classifier = 0.005000 
+Error of the strong classifier on the test set = 0.006000 
+
+</pre><h2>a] Plotting for dataset 1<a name="4"></a></h2><p>Plotting the result</p><pre class="codeinput">figure()
+scatter(X_test(H&gt;0,1),X_test(H&gt;0,2),<span class="string">'b*'</span>);
+hold <span class="string">on</span>;
+scatter(X_test(H&lt;0,1),X_test(H&lt;0,2),<span class="string">'r+'</span>);
+hold <span class="string">off</span>
+title(<span class="string">'Adaboost result for test points in dataset 1'</span>);
+
+
+figure()
+hold <span class="string">on</span>;
+plot(error_training);
+plot(error_test);
+hold <span class="string">off</span>;
+xlabel(<span class="string">'iters'</span>);
+ylabel(<span class="string">'error'</span>);
+legend(<span class="string">'Training set error'</span>,<span class="string">'Test set error'</span>);
+title(<span class="string">'Adaboost for Dataset 1'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <h2>b] Generating Dataset 2<a name="5"></a></h2><pre class="codeinput">N = 2000;   <span class="comment">% Total number of points</span>
+X = rand(N,2);   <span class="comment">% Each row of X corresponds to a point</span>
+
+<span class="comment">% Label points</span>
+y = zeros(N,1);
+y_training = zeros(N/2,1);
+y_test = zeros(N/2,1);
+<span class="keyword">for</span> i=1:size(X,1)
+   <span class="keyword">if</span> X(i,1)&gt;=0.3 &amp;&amp; X(i,1)&lt;=0.7 &amp;&amp; X(i,2)&gt;=0.3 &amp;&amp; X(i,2)&lt;=0.7
+       y(i) = 1;    <span class="comment">% Point lies inside the rectangle bounded by x=0.3, x=0.7, y=0.3 and y=0.7</span>
+   <span class="keyword">elseif</span> (X(i,1)&gt;0.15 &amp;&amp; X(i,1)&lt;0.25) || (X(i,1)&gt;0.75 &amp;&amp; X(i,1)&lt;0.85)
+       y(i) = 1;
+   <span class="keyword">elseif</span> (X(i,2)&gt;0.15 &amp;&amp; X(i,2)&lt;0.25) || (X(i,2)&gt;0.75 &amp;&amp; X(i,2)&lt;0.85)
+       y(i) = 1;
+   <span class="keyword">else</span>
+       y(i) = -1;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Divide the dataset into training set and test set</span>
+seq = randperm(N);
+X_training = zeros(N/2,2);
+X_test = zeros(N/2,2);
+<span class="keyword">for</span> i=1:N/2
+   X_training(i,:) = X(seq(i),:);
+   y_training(i,:) = y(seq(i),:);
+   X_test(i,:) = X(seq(N/2+i),:);
+   y_test(i,:) = y(seq(N/2+i),:);
+<span class="keyword">end</span>
+
+<span class="comment">% Plotting the dataset</span>
+figure()
+scatter(X_test(y_test&gt;0,1),X_test(y_test&gt;0,2),<span class="string">'b*'</span>);
+hold <span class="string">on</span>;
+scatter(X_test(y_test&lt;0,1),X_test(y_test&lt;0,2),<span class="string">'r+'</span>);
+hold <span class="string">off</span>
+title(<span class="string">'Test points in dataset 2'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2>b] Adaboost for Dataset 2<a name="6"></a></h2><p>close all;</p><pre class="codeinput">T = 40;
+
+disp(<span class="string">'****** Adaboost for Dataset 2 *****'</span>);
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = <span class="keyword">...</span>
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+<span class="comment">% get final classification</span>
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+</pre><pre class="codeoutput">****** Adaboost for Dataset 2 *****
+Training error of the strong classifier = 0.379000 
+Error of the strong classifier on the test set = 0.385000 
+
+Training error of the strong classifier = 0.379000 
+Error of the strong classifier on the test set = 0.385000 
+
+Training error of the strong classifier = 0.375000 
+Error of the strong classifier on the test set = 0.369000 
+
+Training error of the strong classifier = 0.301000 
+Error of the strong classifier on the test set = 0.302000 
+
+Training error of the strong classifier = 0.281000 
+Error of the strong classifier on the test set = 0.259000 
+
+Training error of the strong classifier = 0.287000 
+Error of the strong classifier on the test set = 0.288000 
+
+Training error of the strong classifier = 0.298000 
+Error of the strong classifier on the test set = 0.284000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.203000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.203000 
+
+Training error of the strong classifier = 0.224000 
+Error of the strong classifier on the test set = 0.217000 
+
+Training error of the strong classifier = 0.274000 
+Error of the strong classifier on the test set = 0.265000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.203000 
+
+Training error of the strong classifier = 0.262000 
+Error of the strong classifier on the test set = 0.270000 
+
+Training error of the strong classifier = 0.118000 
+Error of the strong classifier on the test set = 0.111000 
+
+Training error of the strong classifier = 0.190000 
+Error of the strong classifier on the test set = 0.187000 
+
+Training error of the strong classifier = 0.119000 
+Error of the strong classifier on the test set = 0.107000 
+
+Training error of the strong classifier = 0.188000 
+Error of the strong classifier on the test set = 0.192000 
+
+Training error of the strong classifier = 0.132000 
+Error of the strong classifier on the test set = 0.127000 
+
+Training error of the strong classifier = 0.116000 
+Error of the strong classifier on the test set = 0.109000 
+
+Training error of the strong classifier = 0.111000 
+Error of the strong classifier on the test set = 0.106000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.140000 
+Error of the strong classifier on the test set = 0.132000 
+
+Training error of the strong classifier = 0.105000 
+Error of the strong classifier on the test set = 0.098000 
+
+Training error of the strong classifier = 0.120000 
+Error of the strong classifier on the test set = 0.116000 
+
+Training error of the strong classifier = 0.105000 
+Error of the strong classifier on the test set = 0.098000 
+
+Training error of the strong classifier = 0.108000 
+Error of the strong classifier on the test set = 0.108000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.120000 
+Error of the strong classifier on the test set = 0.116000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.098000 
+Error of the strong classifier on the test set = 0.086000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.109000 
+Error of the strong classifier on the test set = 0.102000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.109000 
+Error of the strong classifier on the test set = 0.102000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.106000 
+Error of the strong classifier on the test set = 0.099000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+Training error of the strong classifier = 0.095000 
+Error of the strong classifier on the test set = 0.088000 
+
+</pre><h2>b] Plotting for dataset 2<a name="7"></a></h2><p>Plotting the result</p><pre class="codeinput">figure()
+scatter(X_test(H&gt;0,1),X_test(H&gt;0,2),<span class="string">'b*'</span>);
+hold <span class="string">on</span>;
+scatter(X_test(H&lt;0,1),X_test(H&lt;0,2),<span class="string">'r+'</span>);
+hold <span class="string">off</span>
+title(<span class="string">'Adaboost result for test points in dataset 2'</span>);
+
+
+figure()
+hold <span class="string">on</span>;
+plot(error_training);
+plot(error_test);
+hold <span class="string">off</span>;
+xlabel(<span class="string">'iters'</span>);
+ylabel(<span class="string">'error'</span>);
+legend(<span class="string">'Training set error'</span>,<span class="string">'Test set error'</span>);
+title(<span class="string">'Adaboost for Dataset 3'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2>c] Generating Dataset 3<a name="8"></a></h2><pre class="codeinput">N = 2000;   <span class="comment">% Total number of points</span>
+X = 2*randn(N,2);   <span class="comment">% Each row of X corresponds to a point</span>
+
+dist = sqrt(sum(X.^2,2));
+
+<span class="comment">% Label points</span>
+y = -1*ones(N,1);
+y_training = zeros(N/2,1);
+y_test = zeros(N/2,1);
+
+idx = dist&lt;2;
+
+y(idx) = 1;
+
+
+<span class="comment">% Divide the dataset into training set and test set</span>
+seq = randperm(N);
+X_training = zeros(N/2,2);
+X_test = zeros(N/2,2);
+<span class="keyword">for</span> i=1:N/2
+   X_training(i,:) = X(seq(i),:);
+   y_training(i,:) = y(seq(i),:);
+   X_test(i,:) = X(seq(N/2+i),:);
+   y_test(i,:) = y(seq(N/2+i),:);
+<span class="keyword">end</span>
+
+<span class="comment">% Plotting the dataset</span>
+figure()
+scatter(X_test(y_test&gt;0,1),X_test(y_test&gt;0,2),<span class="string">'b*'</span>);
+hold <span class="string">on</span>;
+scatter(X_test(y_test&lt;0,1),X_test(y_test&lt;0,2),<span class="string">'r+'</span>);
+hold <span class="string">off</span>
+title(<span class="string">'Test points in dataset 3'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <h2>c] Adaboost for Dataset 3<a name="9"></a></h2><p>close all;</p><pre class="codeinput">T = 40;
+
+disp(<span class="string">'****** Adaboost for Dataset 3 *****'</span>);
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = <span class="keyword">...</span>
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+<span class="comment">% get final classification</span>
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+</pre><pre class="codeoutput">****** Adaboost for Dataset 3 *****
+Training error of the strong classifier = 0.396000 
+Error of the strong classifier on the test set = 0.415000 
+
+Training error of the strong classifier = 0.413000 
+Error of the strong classifier on the test set = 0.392000 
+
+Training error of the strong classifier = 0.239000 
+Error of the strong classifier on the test set = 0.200000 
+
+Training error of the strong classifier = 0.396000 
+Error of the strong classifier on the test set = 0.415000 
+
+Training error of the strong classifier = 0.158000 
+Error of the strong classifier on the test set = 0.158000 
+
+Training error of the strong classifier = 0.301000 
+Error of the strong classifier on the test set = 0.343000 
+
+Training error of the strong classifier = 0.092000 
+Error of the strong classifier on the test set = 0.093000 
+
+Training error of the strong classifier = 0.075000 
+Error of the strong classifier on the test set = 0.079000 
+
+Training error of the strong classifier = 0.199000 
+Error of the strong classifier on the test set = 0.168000 
+
+Training error of the strong classifier = 0.092000 
+Error of the strong classifier on the test set = 0.093000 
+
+Training error of the strong classifier = 0.125000 
+Error of the strong classifier on the test set = 0.094000 
+
+Training error of the strong classifier = 0.058000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.055000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.058000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.055000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.058000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.055000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.046000 
+Error of the strong classifier on the test set = 0.061000 
+
+Training error of the strong classifier = 0.055000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.049000 
+Error of the strong classifier on the test set = 0.062000 
+
+Training error of the strong classifier = 0.056000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.039000 
+Error of the strong classifier on the test set = 0.045000 
+
+Training error of the strong classifier = 0.058000 
+Error of the strong classifier on the test set = 0.059000 
+
+Training error of the strong classifier = 0.039000 
+Error of the strong classifier on the test set = 0.045000 
+
+Training error of the strong classifier = 0.048000 
+Error of the strong classifier on the test set = 0.061000 
+
+Training error of the strong classifier = 0.036000 
+Error of the strong classifier on the test set = 0.047000 
+
+Training error of the strong classifier = 0.049000 
+Error of the strong classifier on the test set = 0.062000 
+
+Training error of the strong classifier = 0.036000 
+Error of the strong classifier on the test set = 0.040000 
+
+Training error of the strong classifier = 0.036000 
+Error of the strong classifier on the test set = 0.040000 
+
+Training error of the strong classifier = 0.046000 
+Error of the strong classifier on the test set = 0.057000 
+
+Training error of the strong classifier = 0.030000 
+Error of the strong classifier on the test set = 0.039000 
+
+Training error of the strong classifier = 0.049000 
+Error of the strong classifier on the test set = 0.060000 
+
+Training error of the strong classifier = 0.031000 
+Error of the strong classifier on the test set = 0.040000 
+
+Training error of the strong classifier = 0.039000 
+Error of the strong classifier on the test set = 0.043000 
+
+Training error of the strong classifier = 0.031000 
+Error of the strong classifier on the test set = 0.040000 
+
+Training error of the strong classifier = 0.039000 
+Error of the strong classifier on the test set = 0.043000 
+
+Training error of the strong classifier = 0.037000 
+Error of the strong classifier on the test set = 0.046000 
+
+Training error of the strong classifier = 0.035000 
+Error of the strong classifier on the test set = 0.045000 
+
+Training error of the strong classifier = 0.034000 
+Error of the strong classifier on the test set = 0.048000 
+
+Training error of the strong classifier = 0.035000 
+Error of the strong classifier on the test set = 0.045000 
+
+</pre><h2>c] Plotting for dataset 3<a name="10"></a></h2><p>Plotting the result</p><pre class="codeinput">figure()
+scatter(X_test(H&gt;0,1),X_test(H&gt;0,2),<span class="string">'b*'</span>);
+hold <span class="string">on</span>;
+scatter(X_test(H&lt;0,1),X_test(H&lt;0,2),<span class="string">'r+'</span>);
+hold <span class="string">off</span>
+title(<span class="string">'Adaboost result for test points in dataset 3'</span>);
+
+
+figure()
+hold <span class="string">on</span>;
+plot(error_training);
+plot(error_test);
+hold <span class="string">off</span>;
+xlabel(<span class="string">'iters'</span>);
+ylabel(<span class="string">'error'</span>);
+legend(<span class="string">'Training set error'</span>,<span class="string">'Test set error'</span>);
+title(<span class="string">'Adaboost for Dataset 3'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <h2>d] Generating Dataset 4<a name="11"></a></h2><pre class="codeinput">N = 2000;   <span class="comment">% Total number of points</span>
+X = 2*randn(N,2);   <span class="comment">% Each row of X corresponds to a point</span>
+
+dist = sqrt(sum(X.^2,2));
+
+<span class="comment">% Label points</span>
+y = -1*ones(N,1);
+y_training = zeros(N/2,1);
+y_test = zeros(N/2,1);
+
+idx = dist&lt;2 | (dist&gt;2.5 &amp; dist&lt;3);
+y(idx) = 1;
+
+
+<span class="comment">% Divide the dataset into training set and test set</span>
+seq = randperm(N);
+X_training = zeros(N/2,2);
+X_test = zeros(N/2,2);
+<span class="keyword">for</span> i=1:N/2
+   X_training(i,:) = X(seq(i),:);
+   y_training(i,:) = y(seq(i),:);
+   X_test(i,:) = X(seq(N/2+i),:);
+   y_test(i,:) = y(seq(N/2+i),:);
+<span class="keyword">end</span>
+
+<span class="comment">% Plotting the dataset</span>
+figure()
+scatter(X_test(y_test&gt;0,1),X_test(y_test&gt;0,2),<span class="string">'b*'</span>);
+hold <span class="string">on</span>;
+scatter(X_test(y_test&lt;0,1),X_test(y_test&lt;0,2),<span class="string">'r+'</span>);
+hold <span class="string">off</span>
+title(<span class="string">'Test points in dataset 4'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <h2>d] Adaboost for Dataset 4<a name="12"></a></h2><p>close all;</p><pre class="codeinput">T = 40;
+
+disp(<span class="string">'****** Adaboost for Dataset 4 *****'</span>);
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = <span class="keyword">...</span>
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+<span class="comment">% get final classification</span>
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+</pre><pre class="codeoutput">****** Adaboost for Dataset 4 *****
+Training error of the strong classifier = 0.364000 
+Error of the strong classifier on the test set = 0.376000 
+
+Training error of the strong classifier = 0.364000 
+Error of the strong classifier on the test set = 0.376000 
+
+Training error of the strong classifier = 0.283000 
+Error of the strong classifier on the test set = 0.297000 
+
+Training error of the strong classifier = 0.320000 
+Error of the strong classifier on the test set = 0.338000 
+
+Training error of the strong classifier = 0.320000 
+Error of the strong classifier on the test set = 0.314000 
+
+Training error of the strong classifier = 0.242000 
+Error of the strong classifier on the test set = 0.282000 
+
+Training error of the strong classifier = 0.248000 
+Error of the strong classifier on the test set = 0.263000 
+
+Training error of the strong classifier = 0.276000 
+Error of the strong classifier on the test set = 0.285000 
+
+Training error of the strong classifier = 0.205000 
+Error of the strong classifier on the test set = 0.217000 
+
+Training error of the strong classifier = 0.255000 
+Error of the strong classifier on the test set = 0.266000 
+
+Training error of the strong classifier = 0.276000 
+Error of the strong classifier on the test set = 0.278000 
+
+Training error of the strong classifier = 0.244000 
+Error of the strong classifier on the test set = 0.257000 
+
+Training error of the strong classifier = 0.242000 
+Error of the strong classifier on the test set = 0.247000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.226000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.222000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.222000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.222000 
+
+Training error of the strong classifier = 0.241000 
+Error of the strong classifier on the test set = 0.252000 
+
+Training error of the strong classifier = 0.170000 
+Error of the strong classifier on the test set = 0.174000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.222000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.222000 
+
+Training error of the strong classifier = 0.216000 
+Error of the strong classifier on the test set = 0.224000 
+
+Training error of the strong classifier = 0.210000 
+Error of the strong classifier on the test set = 0.222000 
+
+Training error of the strong classifier = 0.194000 
+Error of the strong classifier on the test set = 0.209000 
+
+Training error of the strong classifier = 0.186000 
+Error of the strong classifier on the test set = 0.203000 
+
+Training error of the strong classifier = 0.174000 
+Error of the strong classifier on the test set = 0.180000 
+
+Training error of the strong classifier = 0.166000 
+Error of the strong classifier on the test set = 0.174000 
+
+Training error of the strong classifier = 0.174000 
+Error of the strong classifier on the test set = 0.180000 
+
+Training error of the strong classifier = 0.166000 
+Error of the strong classifier on the test set = 0.174000 
+
+Training error of the strong classifier = 0.174000 
+Error of the strong classifier on the test set = 0.180000 
+
+Training error of the strong classifier = 0.166000 
+Error of the strong classifier on the test set = 0.174000 
+
+Training error of the strong classifier = 0.174000 
+Error of the strong classifier on the test set = 0.180000 
+
+Training error of the strong classifier = 0.166000 
+Error of the strong classifier on the test set = 0.174000 
+
+Training error of the strong classifier = 0.174000 
+Error of the strong classifier on the test set = 0.180000 
+
+Training error of the strong classifier = 0.166000 
+Error of the strong classifier on the test set = 0.174000 
+
+Training error of the strong classifier = 0.174000 
+Error of the strong classifier on the test set = 0.180000 
+
+Training error of the strong classifier = 0.174000 
+Error of the strong classifier on the test set = 0.181000 
+
+Training error of the strong classifier = 0.170000 
+Error of the strong classifier on the test set = 0.179000 
+
+Training error of the strong classifier = 0.173000 
+Error of the strong classifier on the test set = 0.180000 
+
+Training error of the strong classifier = 0.172000 
+Error of the strong classifier on the test set = 0.181000 
+
+</pre><h2>d] Plotting for dataset 4<a name="13"></a></h2><p>Plotting the result</p><pre class="codeinput">figure()
+scatter(X_test(H&gt;0,1),X_test(H&gt;0,2),<span class="string">'b*'</span>);
+hold <span class="string">on</span>;
+scatter(X_test(H&lt;0,1),X_test(H&lt;0,2),<span class="string">'r+'</span>);
+hold <span class="string">off</span>
+title(<span class="string">'Adaboost result for test points in dataset 4'</span>);
+
+
+figure()
+hold <span class="string">on</span>;
+plot(error_training);
+plot(error_test);
+hold <span class="string">off</span>;
+xlabel(<span class="string">'iters'</span>);
+ylabel(<span class="string">'error'</span>);
+legend(<span class="string">'Training set error'</span>,<span class="string">'Test set error'</span>);
+title(<span class="string">'Adaboost for Dataset 4'</span>);
+
+<span class="comment">% For the fourth dataset, the test error is higher compared to the other</span>
+<span class="comment">% datasets. This is because the points labelled '1' in the fourth dataset</span>
+<span class="comment">% are in a circular/annular region whereas our weak classifiers are</span>
+<span class="comment">% horizontal/vertical lines. Due to this nature of our weak classifiers,</span>
+<span class="comment">% points inside the outer boundary of the annular region but outside the circular region are</span>
+<span class="comment">% erroneously labelled as '1'. To remedy this, we can use different weak</span>
+<span class="comment">% classifiers as follows: if the distance of the point is less than a</span>
+<span class="comment">% certain threshold, label it as '1', else label it as '0'.</span>
+</pre><img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <h2>e] Reading the MNIST database<a name="14"></a></h2><pre class="codeinput">[I,labels,I_test,labels_test] = readMNIST;
+</pre><h2>e] Generating training and test sets from the MNIST database<a name="15"></a></h2><pre class="codeinput">sample_img = I_test{1};
+vecSize = size(sample_img,1)*size(sample_img,2);
+
+N_test = length(I_test);    <span class="comment">% Total number of test images</span>
+N_training = 5000;          <span class="comment">% Total number of training images</span>
+
+<span class="comment">% Label test points</span>
+y_test = -1*ones(N_test,1);
+y_test(labels_test==2)=1;
+<span class="comment">% Label training points</span>
+y_training = -1*ones(N_training,1);
+y_training(labels(1:N_training)==2)=1;
+
+<span class="comment">% Divide the dataset into training set and test set</span>
+X_training = zeros(N_training,vecSize);
+X_test = zeros(N_test,vecSize);
+
+<span class="keyword">for</span> i=1:N_test
+    sample_img = I_test{i};
+    X_test(i,:) = sample_img(:)';
+<span class="keyword">end</span>
+<span class="keyword">for</span> i=1:N_training
+    sample_img = I{i};
+    X_training(i,:) = sample_img(:)';
+<span class="keyword">end</span>
+</pre><h2>e] Adaboost for MNIST database<a name="16"></a></h2><pre class="codeinput">T = 40;
+
+disp(<span class="string">'****** Adaboost for MNIST dataset *****'</span>);
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = <span class="keyword">...</span>
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+<span class="comment">% get final classification</span>
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+</pre><pre class="codeoutput">****** Adaboost for MNIST dataset *****
+Training error of the strong classifier = 0.089200 
+Error of the strong classifier on the test set = 0.090100 
+
+Training error of the strong classifier = 0.089200 
+Error of the strong classifier on the test set = 0.090100 
+
+Training error of the strong classifier = 0.089200 
+Error of the strong classifier on the test set = 0.090100 
+
+Training error of the strong classifier = 0.069600 
+Error of the strong classifier on the test set = 0.076800 
+
+Training error of the strong classifier = 0.078200 
+Error of the strong classifier on the test set = 0.080000 
+
+Training error of the strong classifier = 0.053400 
+Error of the strong classifier on the test set = 0.058500 
+
+Training error of the strong classifier = 0.053600 
+Error of the strong classifier on the test set = 0.058700 
+
+Training error of the strong classifier = 0.050400 
+Error of the strong classifier on the test set = 0.054100 
+
+Training error of the strong classifier = 0.048200 
+Error of the strong classifier on the test set = 0.052500 
+
+Training error of the strong classifier = 0.046400 
+Error of the strong classifier on the test set = 0.052400 
+
+Training error of the strong classifier = 0.046800 
+Error of the strong classifier on the test set = 0.049500 
+
+Training error of the strong classifier = 0.043400 
+Error of the strong classifier on the test set = 0.048500 
+
+Training error of the strong classifier = 0.045200 
+Error of the strong classifier on the test set = 0.049500 
+
+Training error of the strong classifier = 0.040600 
+Error of the strong classifier on the test set = 0.044800 
+
+Training error of the strong classifier = 0.042600 
+Error of the strong classifier on the test set = 0.044500 
+
+Training error of the strong classifier = 0.038200 
+Error of the strong classifier on the test set = 0.043200 
+
+Training error of the strong classifier = 0.041400 
+Error of the strong classifier on the test set = 0.046900 
+
+Training error of the strong classifier = 0.038800 
+Error of the strong classifier on the test set = 0.043200 
+
+Training error of the strong classifier = 0.039400 
+Error of the strong classifier on the test set = 0.042600 
+
+Training error of the strong classifier = 0.036200 
+Error of the strong classifier on the test set = 0.040300 
+
+Training error of the strong classifier = 0.037800 
+Error of the strong classifier on the test set = 0.041700 
+
+Training error of the strong classifier = 0.035800 
+Error of the strong classifier on the test set = 0.041500 
+
+Training error of the strong classifier = 0.034800 
+Error of the strong classifier on the test set = 0.039700 
+
+Training error of the strong classifier = 0.035000 
+Error of the strong classifier on the test set = 0.038500 
+
+Training error of the strong classifier = 0.036400 
+Error of the strong classifier on the test set = 0.039400 
+
+Training error of the strong classifier = 0.032800 
+Error of the strong classifier on the test set = 0.037700 
+
+Training error of the strong classifier = 0.032600 
+Error of the strong classifier on the test set = 0.037400 
+
+Training error of the strong classifier = 0.032400 
+Error of the strong classifier on the test set = 0.038700 
+
+Training error of the strong classifier = 0.032200 
+Error of the strong classifier on the test set = 0.037800 
+
+Training error of the strong classifier = 0.033200 
+Error of the strong classifier on the test set = 0.038500 
+
+Training error of the strong classifier = 0.031200 
+Error of the strong classifier on the test set = 0.036600 
+
+Training error of the strong classifier = 0.032200 
+Error of the strong classifier on the test set = 0.037600 
+
+Training error of the strong classifier = 0.029600 
+Error of the strong classifier on the test set = 0.035700 
+
+Training error of the strong classifier = 0.031000 
+Error of the strong classifier on the test set = 0.036700 
+
+Training error of the strong classifier = 0.029200 
+Error of the strong classifier on the test set = 0.036600 
+
+Training error of the strong classifier = 0.029200 
+Error of the strong classifier on the test set = 0.036700 
+
+Training error of the strong classifier = 0.027200 
+Error of the strong classifier on the test set = 0.036200 
+
+Training error of the strong classifier = 0.030600 
+Error of the strong classifier on the test set = 0.037200 
+
+Training error of the strong classifier = 0.029400 
+Error of the strong classifier on the test set = 0.036300 
+
+Training error of the strong classifier = 0.029400 
+Error of the strong classifier on the test set = 0.036100 
+
+</pre><h2>e] Plotting for MNIST database<a name="17"></a></h2><pre class="codeinput">figure()
+hold <span class="string">on</span>;
+plot(error_training);
+plot(error_test);
+hold <span class="string">off</span>;
+xlabel(<span class="string">'iters'</span>);
+ylabel(<span class="string">'error'</span>);
+legend(<span class="string">'Training set error'</span>,<span class="string">'Test set error'</span>);
+title(<span class="string">'Adaboost for MNIST'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% CS 763: Assignment 4
+% 24th March, 2016
+% Authors: Ayush Baid, Niranjan Thakurdesai, Jainesh Doshi
+
+clc;
+clear;
+close all;
+
+
+%% a] generating Dataset 1
+
+N = 2000;   % Total number of points
+X = rand(N,2);   % Each row of X corresponds to a point
+
+% Label points
+y = zeros(N,1);
+y_training = zeros(N/2,1);
+y_test = zeros(N/2,1);
+for i=1:size(X,1)
+   if X(i,1)>=0.3 && X(i,1)<=0.7 && X(i,2)>=0.3 && X(i,2)<=0.7
+       y(i) = 1;    % Point lies inside the rectangle bounded by x=0.3, x=0.7, y=0.3 and y=0.7
+   else
+       y(i) = -1;
+   end
+end
+
+% Divide the dataset into training set and test set
+seq = randperm(N);
+X_training = zeros(N/2,2);
+X_test = zeros(N/2,2);
+for i=1:N/2
+   X_training(i,:) = X(seq(i),:);
+   y_training(i,:) = y(seq(i),:);
+   X_test(i,:) = X(seq(N/2+i),:);
+   y_test(i,:) = y(seq(N/2+i),:);
+end
+
+% Plotting the dataset
+figure()
+scatter(X_test(y_test>0,1),X_test(y_test>0,2),'b*');
+hold on;
+scatter(X_test(y_test<0,1),X_test(y_test<0,2),'r+');
+hold off
+title('Test points in dataset 1');
+
+%% a] Adaboost for Dataset 1
+% close all;
+T = 40;
+
+disp('****** Adaboost for Dataset 1 *****');
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = ...
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+% get final classification
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+
+
+%% a] Plotting for dataset 1
+% Plotting the result
+figure()
+scatter(X_test(H>0,1),X_test(H>0,2),'b*');
+hold on;
+scatter(X_test(H<0,1),X_test(H<0,2),'r+');
+hold off
+title('Adaboost result for test points in dataset 1');
+
+
+figure()
+hold on;
+plot(error_training);
+plot(error_test);
+hold off;
+xlabel('iters');
+ylabel('error');
+legend('Training set error','Test set error');
+title('Adaboost for Dataset 1');
+
+%% b] Generating Dataset 2
+
+N = 2000;   % Total number of points
+X = rand(N,2);   % Each row of X corresponds to a point
+
+% Label points
+y = zeros(N,1);
+y_training = zeros(N/2,1);
+y_test = zeros(N/2,1);
+for i=1:size(X,1)
+   if X(i,1)>=0.3 && X(i,1)<=0.7 && X(i,2)>=0.3 && X(i,2)<=0.7
+       y(i) = 1;    % Point lies inside the rectangle bounded by x=0.3, x=0.7, y=0.3 and y=0.7
+   elseif (X(i,1)>0.15 && X(i,1)<0.25) || (X(i,1)>0.75 && X(i,1)<0.85)
+       y(i) = 1;   
+   elseif (X(i,2)>0.15 && X(i,2)<0.25) || (X(i,2)>0.75 && X(i,2)<0.85)
+       y(i) = 1;
+   else
+       y(i) = -1;
+   end
+end
+
+% Divide the dataset into training set and test set
+seq = randperm(N);
+X_training = zeros(N/2,2);
+X_test = zeros(N/2,2);
+for i=1:N/2
+   X_training(i,:) = X(seq(i),:);
+   y_training(i,:) = y(seq(i),:);
+   X_test(i,:) = X(seq(N/2+i),:);
+   y_test(i,:) = y(seq(N/2+i),:);
+end
+
+% Plotting the dataset
+figure()
+scatter(X_test(y_test>0,1),X_test(y_test>0,2),'b*');
+hold on;
+scatter(X_test(y_test<0,1),X_test(y_test<0,2),'r+');
+hold off
+title('Test points in dataset 2');
+
+%% b] Adaboost for Dataset 2
+% close all;
+T = 40;
+
+disp('****** Adaboost for Dataset 2 *****');
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = ...
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+% get final classification
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+
+
+%% b] Plotting for dataset 2
+% Plotting the result
+figure()
+scatter(X_test(H>0,1),X_test(H>0,2),'b*');
+hold on;
+scatter(X_test(H<0,1),X_test(H<0,2),'r+');
+hold off
+title('Adaboost result for test points in dataset 2');
+
+
+figure()
+hold on;
+plot(error_training);
+plot(error_test);
+hold off;
+xlabel('iters');
+ylabel('error');
+legend('Training set error','Test set error');
+title('Adaboost for Dataset 3');
+
+%% c] Generating Dataset 3
+
+N = 2000;   % Total number of points
+X = 2*randn(N,2);   % Each row of X corresponds to a point
+
+dist = sqrt(sum(X.^2,2));
+
+% Label points
+y = -1*ones(N,1);
+y_training = zeros(N/2,1);
+y_test = zeros(N/2,1);
+
+idx = dist<2;
+
+y(idx) = 1;
+
+
+% Divide the dataset into training set and test set
+seq = randperm(N);
+X_training = zeros(N/2,2);
+X_test = zeros(N/2,2);
+for i=1:N/2
+   X_training(i,:) = X(seq(i),:);
+   y_training(i,:) = y(seq(i),:);
+   X_test(i,:) = X(seq(N/2+i),:);
+   y_test(i,:) = y(seq(N/2+i),:);
+end
+
+% Plotting the dataset
+figure()
+scatter(X_test(y_test>0,1),X_test(y_test>0,2),'b*');
+hold on;
+scatter(X_test(y_test<0,1),X_test(y_test<0,2),'r+');
+hold off
+title('Test points in dataset 3');
+
+%% c] Adaboost for Dataset 3
+% close all;
+T = 40;
+
+disp('****** Adaboost for Dataset 3 *****');
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = ...
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+% get final classification
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+
+
+%% c] Plotting for dataset 3
+% Plotting the result
+figure()
+scatter(X_test(H>0,1),X_test(H>0,2),'b*');
+hold on;
+scatter(X_test(H<0,1),X_test(H<0,2),'r+');
+hold off
+title('Adaboost result for test points in dataset 3');
+
+
+figure()
+hold on;
+plot(error_training);
+plot(error_test);
+hold off;
+xlabel('iters');
+ylabel('error');
+legend('Training set error','Test set error');
+title('Adaboost for Dataset 3');
+
+%% d] Generating Dataset 4
+
+N = 2000;   % Total number of points
+X = 2*randn(N,2);   % Each row of X corresponds to a point
+
+dist = sqrt(sum(X.^2,2));
+
+% Label points
+y = -1*ones(N,1);
+y_training = zeros(N/2,1);
+y_test = zeros(N/2,1);
+
+idx = dist<2 | (dist>2.5 & dist<3);
+y(idx) = 1;
+
+
+% Divide the dataset into training set and test set
+seq = randperm(N);
+X_training = zeros(N/2,2);
+X_test = zeros(N/2,2);
+for i=1:N/2
+   X_training(i,:) = X(seq(i),:);
+   y_training(i,:) = y(seq(i),:);
+   X_test(i,:) = X(seq(N/2+i),:);
+   y_test(i,:) = y(seq(N/2+i),:);
+end
+
+% Plotting the dataset
+figure()
+scatter(X_test(y_test>0,1),X_test(y_test>0,2),'b*');
+hold on;
+scatter(X_test(y_test<0,1),X_test(y_test<0,2),'r+');
+hold off
+title('Test points in dataset 4');
+
+
+%% d] Adaboost for Dataset 4
+% close all;
+T = 40;
+
+disp('****** Adaboost for Dataset 4 *****');
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = ...
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+% get final classification
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+
+
+%% d] Plotting for dataset 4
+% Plotting the result
+figure()
+scatter(X_test(H>0,1),X_test(H>0,2),'b*');
+hold on;
+scatter(X_test(H<0,1),X_test(H<0,2),'r+');
+hold off
+title('Adaboost result for test points in dataset 4');
+
+
+figure()
+hold on;
+plot(error_training);
+plot(error_test);
+hold off;
+xlabel('iters');
+ylabel('error');
+legend('Training set error','Test set error');
+title('Adaboost for Dataset 4');
+
+% For the fourth dataset, the test error is higher compared to the other
+% datasets. This is because the points labelled '1' in the fourth dataset
+% are in a circular/annular region whereas our weak classifiers are
+% horizontal/vertical lines. Due to this nature of our weak classifiers,
+% points inside the outer boundary of the annular region but outside the circular region are
+% erroneously labelled as '1'. To remedy this, we can use different weak
+% classifiers as follows: if the distance of the point is less than a
+% certain threshold, label it as '1', else label it as '0'.
+
+%% e] Reading the MNIST database
+[I,labels,I_test,labels_test] = readMNIST;
+
+%% e] Generating training and test sets from the MNIST database
+sample_img = I_test{1};
+vecSize = size(sample_img,1)*size(sample_img,2);
+
+N_test = length(I_test);    % Total number of test images
+N_training = 5000;          % Total number of training images
+
+% Label test points
+y_test = -1*ones(N_test,1);
+y_test(labels_test==2)=1;
+% Label training points
+y_training = -1*ones(N_training,1);
+y_training(labels(1:N_training)==2)=1;
+
+% Divide the dataset into training set and test set
+X_training = zeros(N_training,vecSize);
+X_test = zeros(N_test,vecSize);
+
+for i=1:N_test
+    sample_img = I_test{i};
+    X_test(i,:) = sample_img(:)';
+end
+for i=1:N_training
+    sample_img = I{i};
+    X_training(i,:) = sample_img(:)';
+end
+
+%% e] Adaboost for MNIST database
+T = 40;
+
+disp('****** Adaboost for MNIST dataset *****');
+
+[ error_training,error_test,i_opt,p_opt,theta_opt,alpha ] = ...
+    adaboost( X_training,X_test,T,y_training,y_test );
+
+% get final classification
+H = strong_classifier(X_test,i_opt,p_opt,theta_opt,alpha);
+
+%% e] Plotting for MNIST database
+figure()
+hold on;
+plot(error_training);
+plot(error_test);
+hold off;
+xlabel('iters');
+ylabel('error');
+legend('Training set error','Test set error');
+title('Adaboost for MNIST');
+
+##### SOURCE END #####
+--></body></html>

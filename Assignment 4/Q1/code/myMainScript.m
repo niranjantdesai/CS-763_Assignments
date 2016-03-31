@@ -287,8 +287,14 @@ ylabel('error');
 legend('Training set error','Test set error');
 title('Adaboost for Dataset 4');
 
-% TODO: Do you notice something peculiar with the fourth dataset? Explain
-% what you would you do to remedy that situation (there is no need to implement). 
+% For the fourth dataset, the test error is higher compared to the other
+% datasets. This is because the points labelled '1' in the fourth dataset
+% are in a circular/annular region whereas our weak classifiers are
+% horizontal/vertical lines. Due to this nature of our weak classifiers,
+% points inside the outer boundary of the annular region but outside the circular region are
+% erroneously labelled as '1'. To remedy this, we can use different weak
+% classifiers as follows: if the distance of the point is less than a
+% certain threshold, label it as '1', else label it as '0'.
 
 %% e] Reading the MNIST database
 [I,labels,I_test,labels_test] = readMNIST;

@@ -1,0 +1,22 @@
+\documentclass[11pt]{article}
+
+\title{Assignment 4: CS 763, Computer Vision}
+\author{Ayush Baid (12D100002) \\
+Niranjan Thakurdesai (12D100007) \\
+Jainesh Doshi (12D070014)}
+\date{Due 29th March before 11:55 pm}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+\maketitle
+
+\section*{Question 2}
+
+Let the water surface have the equation $z = h(x,y)$. Thus, the normal to the surface is given by $\mathbf{n}(x,y) = \left( -\dfrac{\partial h}{\partial x},-\dfrac{\partial h}{\partial y},1 \right)$.
+
+As $\mathbf{s}$, $\mathbf{r}$ and $\mathbf{n}$ lie in the same plane, $(\mathbf{s}\times\mathbf{r})\cdot\mathbf{n}=0$. Now, $\mathbf{s}\times\mathbf{r} = (\mathbf{r}_y,-\mathbf{r}_x)$ and $\mathbf{n}(x,y) = \left( -\dfrac{\partial h}{\partial x},-\dfrac{\partial h}{\partial y},1 \right)$. Thus, we get $\frac{\mathbf{r}_y}{\mathbf{r}_x} = \left(\dfrac{\partial h}{\partial y}\right)/\left(\dfrac{\partial h}{\partial x}\right)$. Hence, $(\mathbf{r}_x,\mathbf{r}_y)$ is parallel to $(\dfrac{\partial h}{\partial x},\dfrac{\partial h}{\partial y})$.
+
+\end{document}
