@@ -28,10 +28,40 @@ As $\mathbf{s}$, $\mathbf{r}$ and $\mathbf{n}$ lie in the same plane, $(\mathbf{
 \subsection*{Part c}
 Note that $\mathbf{r}$, $\mathbf{c}$, and $\mathbf{d}$ are coplanar. Therefore, we can use basic trigonometry to estimate the magnitude of $\mathbf{c}$.
 
-$|\mathbf{c}| = \tan(\alpha-\beta) * h(x,y)$. But h(x,y) will be close to $h_{0}$ and hence $|\mathbf{c}| \approxeq \tan(\alpha-\beta) * h_{0}$
+$|\mathbf{c}| = \tan(\alpha-\beta) * h(x,y)$. But h(x,y) will be close to $h_{0}$ and hence $|\mathbf{c}| \approxeq \tan(\alpha-\beta) * h_{0}$.
+
+We can write two equations between $\mathbf{r}$ and $\mathbf{c}$ (QQ').\\
+First equation is obtained by vector addition.
+$$ \mathbf{d} + \mathbf{c} = \mathbf{r}$$.
+
+
+Also, the angle between $\mathbf{r}$ and $\mathbf{c}$ is $90 - \alpha + \beta$
+
+$$ \mathbf{r}.\mathbf{c} = ||\mathbf{r}||.||\mathbf{c}|| cos(90 - \alpha + \beta) $$
 
 \subsection*{Part d}
 
+$(h_{x},h_{y})$ is the projection of the surface normal on the XY plane. As the normal makes an angle $\alpha$ with the Z-axis, $||(h_{x},h_{y})|| = \sin\alpha$.\\
+
+We have also established that $(\mathbf{r}_{x},\mathbf{r}_{y})$ is parallel to $(h_{x},h_{y})$.
+\begin{gather*}
+(\mathbf{r}_{x},\mathbf{r}_{y}) =  \frac{||(\mathbf{r}_{x},\mathbf{r}_{y})||}{||(h_{x},h_{y})||}(h_{x},h_{y}).
+\end{gather*}
+
+Since $\mathbf{c}$ is the projection of $\mathbf{r}$ on the XY plane,
+\begin{gather*}
+||\mathbf{c}|| = ||(r_{x},r_{y})|| \approx h_{0} sin(\alpha-\beta)
+\end{gather*}
+
+
+As $\alpha$, $\beta$ are small, and $h(x,y)$ is close to $h_{0}$, we can consider $||r|| \approx h_{0}$
+
+\begin{gather*}
+(\mathbf{r}_{x},\mathbf{r}_{y}) = \frac{h_{0} \sin(\alpha-\beta)}{\sin(\alpha)} (h_{x},h_{y})\\
+(\mathbf{r}_{x},\mathbf{r}_{y}) = h_{0} \frac{\sin(\alpha)\cos(\beta) - \cos(\alpha)\sin(\beta)}{\sin(\alpha)} (h_{x},h_{y})\\
+(\mathbf{r}_{x},\mathbf{r}_{y}) \approx (1-\frac{\sin\beta}{\sin\alpha}) (h_{x},h_{y})\\
+(\mathbf{r}_{x},\mathbf{r}_{y}) \approx (1-\frac{1}{\kappa}) (h_{x},h_{y})\\
+\end{gather*}
 
 \subsection*{Part e}
 Using Part d, $\mathbf{c} = \mathbf{r} - \mathbf{d}$. Also, as $\mathbf{c}$ is parallel to the XY plane, $\mathbf{c}_{z} = 0$. Hence, $\mathbf{c}_{x} = \mathbf{r}_{x}$ and $\mathbf{c}_{y} = \mathbf{r}_{y}$.
