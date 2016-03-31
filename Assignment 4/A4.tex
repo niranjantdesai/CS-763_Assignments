@@ -7,16 +7,50 @@ Jainesh Doshi (12D070014)}
 \date{Due 29th March before 11:55 pm}
 
 \usepackage{amsmath}
+\usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage[margin=1in]{geometry}
+\setlength\parindent{0pt}
 
 \begin{document}
 \maketitle
 
 \section*{Question 2}
 
-Let the water surface have the equation $z = h(x,y)$. Thus, the normal to the surface is given by $\mathbf{n}(x,y) = \left( -\dfrac{\partial h}{\partial x},-\dfrac{\partial h}{\partial y},1 \right)$.
+\includegraphics[scale=0.2]{diagram.jpg}
 
-As $\mathbf{s}$, $\mathbf{r}$ and $\mathbf{n}$ lie in the same plane, $(\mathbf{s}\times\mathbf{r})\cdot\mathbf{n}=0$. Now, $\mathbf{s}\times\mathbf{r} = (\mathbf{r}_y,-\mathbf{r}_x)$ and $\mathbf{n}(x,y) = \left( -\dfrac{\partial h}{\partial x},-\dfrac{\partial h}{\partial y},1 \right)$. Thus, we get $\frac{\mathbf{r}_y}{\mathbf{r}_x} = \left(\dfrac{\partial h}{\partial y}\right)/\left(\dfrac{\partial h}{\partial x}\right)$. Hence, $(\mathbf{r}_x,\mathbf{r}_y)$ is parallel to $(\dfrac{\partial h}{\partial x},\dfrac{\partial h}{\partial y})$.
+\subsection*{Part a}
+Let the water surface have the equation $z = h(x,y)$. Thus, the normal to the surface is given by $\mathbf{n}(x,y) = \left( -\dfrac{\partial h}{\partial x},-\dfrac{\partial h}{\partial y},1 \right)$.\\
 
+\subsection*{Part b}
+As $\mathbf{s}$, $\mathbf{r}$ and $\mathbf{n}$ lie in the same plane, $(\mathbf{s}\times\mathbf{r})\cdot\mathbf{n}=0$. Now, $\mathbf{s} = (0,0,-1) \implies \mathbf{s}\times\mathbf{r} = (\mathbf{r}_y,-\mathbf{r}_x)$ and $\mathbf{n}(x,y) = \left( -\dfrac{\partial h}{\partial x},-\dfrac{\partial h}{\partial y},1 \right)$. Thus, we get $\frac{\mathbf{r}_y}{\mathbf{r}_x} = \left(\dfrac{\partial h}{\partial y}\right)/\left(\dfrac{\partial h}{\partial x}\right)$. Hence, $(\mathbf{r}_x,\mathbf{r}_y)$ is parallel to $(\dfrac{\partial h}{\partial x},\dfrac{\partial h}{\partial y})$.
+
+\subsection*{Part c}
+Note that $\mathbf{r}$, $\mathbf{c}$, and $\mathbf{d}$ are coplanar. Therefore, we can use basic trigonometry to estimate the magnitude of $\mathbf{c}$.
+
+$|\mathbf{c}| = \tan(\alpha-\beta) * h(x,y)$. But h(x,y) will be close to $h_{0}$ and hence $|\mathbf{c}| \approxeq \tan(\alpha-\beta) * h_{0}$
+
+\subsection*{Part d}
+
+
+\subsection*{Part e}
+Using Part d, $\mathbf{c} = \mathbf{r} - \mathbf{d}$. Also, as $\mathbf{c}$ is parallel to the XY plane, $\mathbf{c}_{z} = 0$. Hence, $\mathbf{c}_{x} = \mathbf{r}_{x}$ and $\mathbf{c}_{y} = \mathbf{r}_{y}$.
+
+Also, we have the assumption that the time average depth of water at each point in $h_{0}$.\\
+
+$
+\implies \int_{t} h(x,y,t) dt = h_{0}   \text{ } \forall (x,y)
+$\\
+Taking derivatives w.r.t x and y,\\
+$
+\int_{t} \dfrac{\partial{h(x,y,t)}}{\partial{x}} dt = 0 \text{  and  } \int_{t} \dfrac{\partial{h(x,y,t)}}{\partial{y}} dt = 0   \text{ } \forall (x,y) 
+$\\
+$
+\implies \int_{t} \mathbf{r}_{x} dt = 0 \text{ and } \int_{t} \mathbf{r}_{y} dt = 0 \text{ for all points. }
+$\\
+$\implies \int_{t} \mathbf{c} dt = 0 $ for all points.
+
+Hence, for each point in the object, we can integrate its image in all frames and the take the average location as its true location. This will give us the actual location Q' for each point. Now, as we know $\mathbf{c} = QQ'$ and hence $\mathbf{r}_{x}$ and $\mathbf{r}_{x}$ at each point and at each frame, we get the partial derivatives $h_{x}$ and $h_{y}$.\\
+
+We now have surface normals at each point, and can utilize shape from shading algorithm to recover the surface. The algorithm will give the surface but with an added constant, which can be different in each frame. We can utilize the property that the volume of water has to remain constant, hence the integration of $h(x,y)$ over the surface will remain constant at each frame. This correction will give us a consistent estimate across frames.
 \end{document}
