@@ -118,11 +118,50 @@ You will need to use the following properties assuming vectors $\mathbf{x}$, $\m
 \\
 \begin{enumerate}
 \item We can write the following result: $\|\mathbf{A(x-x^{\star})}\|_2 \leq 2\epsilon$. \textcolor{blue}{(How is this derived?)}
+\textcolor{blue}{
+\begin{gather*}
+\|\mathbf{y} - \mathbf{Ax^{\star}}\|_2 \leq \epsilon \\
+\|\mathbf{\eta}\|_2 = \|\mathbf{y} - \mathbf{Ax}\|_2 = \|\mathbf{Ax} - \mathbf{y}\|_2  \leq \epsilon \\
+\therefore \|\mathbf{y} - \mathbf{Ax^{\star}}\|_2 + \|\mathbf{Ax} - \mathbf{y}\|_2 \leq 2\epsilon
+\end{gather*}
+Using the triangle inequality,
+\begin{align*}
+\| \mathbf{y} - \mathbf{Ax^{\star}} + \mathbf{Ax} - \mathbf{y} \|_2 \leq 2\epsilon \\
+\therefore \|\mathbf{A(x-x^{\star})}\|_2 \leq 2\epsilon
+\end{align*}
+}
 \item Let us define vector $\mathbf{h} = \mathbf{x^{\star}-x}$. Let us denote vector $\mathbf{h_T}$ as the vector equal to $\mathbf{h}$ only on an index set $T$ and zero at all other indices. Let $T_0$ the set of indices containing the $s$ largest entries of $\mathbf{x}$ (in terms of absolute value), $T_1$ be the set of indices of the $s$ largest entries of $\mathbf{h}_{T^c_0}$, $T_2$ be the set of indices of the next $s$ largest entries of $\mathbf{h}_{T^c_0}$ after $T_1$, and so on. We will now decompose $\mathbf{h}$ as the sum of $\mathbf{h_{T_0}}, \mathbf{h_{T_1}}, \mathbf{h_{T_2}}, ...$. We will denote the complement of an index set $T$ as $T^c$. Our aim will be to prove that both $\|\mathbf{h_{T_0 \cup T_1}}\|_2$ and $\|\mathbf{h_{(T_0 \cup T_1)^c}}\|_2$ are upper bounded by sensible and intuitive quantities. 
 \item We will first prove the bound on $\|\mathbf{h}_{(T_0 \cup T_1)^c}\|_2$, in the following way, using simple vector properties and the fact that $\mathbf{x+h}$ is the minimum of the objective function subject to the given constraint. 
 \begin{enumerate}
-\item We have $\|\mathbf{h}_{T_j}\|_2 \leq s^{1/2} \|\mathbf{h}_{T_j}\|_\infty \leq s^{-1/2} \|\mathbf{h}_{T_{j-1}}\|_1$. \textcolor{blue}{(Prove both these inequalities. Note that any element of $T_{j-1}$ is greater than or equal to any element of $T_j$ for any $j \geq 1$)}. 
-\item Therefore $\sum_{j \geq 2}\|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \|\mathbf{h}_{(T_0)^c}\|_1$. \textcolor{blue}{(Prove this inequality)}. 
+\item We have $\|\mathbf{h}_{T_j}\|_2 \leq s^{1/2} \|\mathbf{h}_{T_j}\|_\infty \leq s^{-1/2} \|\mathbf{h}_{T_{j-1}}\|_1$. \textcolor{blue}{(Prove both these inequalities. Note that any element of $T_{j-1}$ is greater than or equal to any element of $T_j$ for any $j \geq 1$)}.\\
+\textcolor{blue}{
+\begin{gather*}
+\|\mathbf{h}_{T_j}\|_2 = \sqrt{\sum_{i \in T_j} \mathbf{h}_{T_ji}^2} \leq \sqrt{\sum_{i \in T_j} \|\mathbf{h}_{T_j}\|_\infty^2} = s^{1/2}\|\mathbf{h}_{T_j}\|_\infty \text{ as } \mathbf{h}_{T_j} \text{ is s-sparse}
+\end{gather*}
+Any element of $T_{j-1}$ is greater than or equal to any element of $T_j$ for any $j \geq 1$. Therefore,
+\begin{gather*}
+\sum_{i \in T_j} \|\mathbf{h}_{T_j}\|_\infty \leq \sum_{i \in T_j} |\mathbf{h}_{T_{j-1}i}| \\
+\therefore s\|\mathbf{h}_{T_j}\|_\infty \leq \|\mathbf{h}_{T_{j-1}}\|_1 \\
+\text{or } s^{1/2} \|\mathbf{h}_{T_j}\|_\infty \leq s^{-1/2} \|\mathbf{h}_{T_{j-1}}\|_1
+\end{gather*}
+So, from the equations above, $\|\mathbf{h}_{T_j}\|_2 \leq s^{1/2} \|\mathbf{h}_{T_j}\|_\infty \leq s^{-1/2} \|\mathbf{h}_{T_{j-1}}\|_1$.
+ } 
+\item Therefore $\sum_{j \geq 2}\|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \|\mathbf{h}_{(T_0)^c}\|_1$. \textcolor{blue}{(Prove this inequality)}. \\
+\textcolor{blue}{
+From the above result,
+\begin{gather}
+\|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \|\mathbf{h}_{T_{j-1}}\|_1 \\
+\therefore \sum_{j \geq 2}\|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \sum_{j \geq 2}\|\mathbf{h}_{T_{j-1}}\|_1 = \sum_{j \geq 1}\|\mathbf{h}_{T_{j}}\|_1
+\label{c21}
+\end{gather}
+As $T_j$'s are mutually exclusive and using the definition of $\{T_j\}_{j \geq 1}$,
+\begin{gather}
+\mathbf{h}_{(T_0)^c} = \sum_{j \geq 1}\mathbf{h}_{T_{j}} \\
+\text{and }\|\mathbf{h}_{(T_0)^c}\|_1 =  \sum_{j \geq 1}\|\mathbf{h}_{T_{j}}\|_1
+\label{c22}
+\end{gather}
+Using equations (\ref{c21}) and (\ref{c22}), $\sum_{j \geq 2}\|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \|\mathbf{h}_{(T_0)^c}\|_1$.
+}
 \item Hence we have $\|\mathbf{h}_{(T_0 \cup T_1)^c}\|_2 = \|\sum_{j \geq 2} \mathbf{h}_{T_j}\|_2 \leq \sum_{j \geq 2} \|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \|\mathbf{h}_{(T_0)^c}\|_1$ (\textcolor{blue}{Prove both inequalities}).
 \item Now it turns out that $\|\mathbf{h}_{(T_0)^c}\|_1$ is not very large in value. Why so? As $\mathbf{x}^{\star}$ is the minimum, we have $\|\mathbf{x}\|_1 \geq \|\mathbf{x}+\mathbf{h}\|_1 = \sum_{i \in T_0} |x_i + h_i| + \sum_{i \in {(T_0)}^c} |x_i + h_i| \geq \|\mathbf{x}_{T_0}\|_1 - \|\mathbf{h}_{T_0}\|_1 + \|\mathbf{h}_{{(T_0)}^c}\|_1 - \|\mathbf{x}_{{(T_0)^c}}\|_1$ \textcolor{blue}{Prove the last inequality}. 
 \item Rearranging the terms now gives us $\|\mathbf{h}_{{(T_0)}^c}\|_1 \leq \|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}_{{(T_0)^c}}\|_1 = \|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}-\mathbf{x_s}\|_1$. 
