@@ -162,8 +162,18 @@ As $T_j$'s are mutually exclusive and using the definition of $\{T_j\}_{j \geq 1
 \end{gather}
 Using equations (\ref{c21}) and (\ref{c22}), $\sum_{j \geq 2}\|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \|\mathbf{h}_{(T_0)^c}\|_1$.
 }
-\item Hence we have $\|\mathbf{h}_{(T_0 \cup T_1)^c}\|_2 = \|\sum_{j \geq 2} \mathbf{h}_{T_j}\|_2 \leq \sum_{j \geq 2} \|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \|\mathbf{h}_{(T_0)^c}\|_1$ (\textcolor{blue}{Prove both inequalities}).
-\item Now it turns out that $\|\mathbf{h}_{(T_0)^c}\|_1$ is not very large in value. Why so? As $\mathbf{x}^{\star}$ is the minimum, we have $\|\mathbf{x}\|_1 \geq \|\mathbf{x}+\mathbf{h}\|_1 = \sum_{i \in T_0} |x_i + h_i| + \sum_{i \in {(T_0)}^c} |x_i + h_i| \geq \|\mathbf{x}_{T_0}\|_1 - \|\mathbf{h}_{T_0}\|_1 + \|\mathbf{h}_{{(T_0)}^c}\|_1 - \|\mathbf{x}_{{(T_0)^c}}\|_1$ \textcolor{blue}{Prove the last inequality}. 
+\item Hence we have $\|\mathbf{h}_{(T_0 \cup T_1)^c}\|_2 = \|\sum_{j \geq 2} \mathbf{h}_{T_j}\|_2 \leq \sum_{j \geq 2} \|\mathbf{h}_{T_j}\|_2 \leq s^{-1/2} \|\mathbf{h}_{(T_0)^c}\|_1$ (\textcolor{blue}{Prove both inequalities}).\\
+\textcolor{blue}{
+As $T_j$'s are mutually exclusive, we can write $\mathbf{h} = \mathbf{h}_{T_0} + \mathbf{h}_{T_1} + \mathbf{h}_{T_2} + ...$ and $\mathbf{h}_{(T_0 \cup T_1)^c} = \sum_{j \geq 2} \mathbf{h}_{T_j}$. Taking L2 norm on both sides gives us the first equality. Using the triangle inequality, we get the first inequality, and the second inequality follows from the previous result.
+}
+\item Now it turns out that $\|\mathbf{h}_{(T_0)^c}\|_1$ is not very large in value. Why so? As $\mathbf{x}^{\star}$ is the minimum, we have $\|\mathbf{x}\|_1 \geq \|\mathbf{x}+\mathbf{h}\|_1 = \sum_{i \in T_0} |x_i + h_i| + \sum_{i \in {(T_0)}^c} |x_i + h_i| \geq \|\mathbf{x}_{T_0}\|_1 - \|\mathbf{h}_{T_0}\|_1 + \|\mathbf{h}_{{(T_0)}^c}\|_1 - \|\mathbf{x}_{{(T_0)^c}}\|_1$ \textcolor{blue}{Prove the last inequality}. \\
+\textcolor{blue}{
+\begin{gather*}
+\sum_{i \in T_0} |x_i + h_i| \geq \sum_{i \in T_0}|x_i| - \sum_{i \in T_0}|h_i| = \|\mathbf{x}_{T_0}\|_1 - \|\mathbf{h}_{T_0}\|_1\\
+\sum_{i \in {(T_0)}^c} |x_i + h_i| \geq \sum_{i \in {(T_0)}^c}|h_i| - \sum_{i \in {(T_0)}^c}|x_i| = \|\mathbf{h}_{{(T_0)}^c}\|_1 - \|\mathbf{x}_{{(T_0)^c}}\|_1
+\end{gather*}
+Adding the above inequalities gives us the last inequality.
+}
 \item Rearranging the terms now gives us $\|\mathbf{h}_{{(T_0)}^c}\|_1 \leq \|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}_{{(T_0)^c}}\|_1 = \|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}-\mathbf{x_s}\|_1$. 
 \item Combining everything, we now have $\|\mathbf{h}_{(T_0 \cup T_1)^c}\|_2 \leq s^{-1/2}(\|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}-\mathbf{x_s}\|_1) \leq \|\mathbf{h}_{{(T_0)}}\|_2 + 2s^{-1/2} \|\mathbf{x}-\mathbf{x_s}\|_1$. \textcolor{blue}{(Prove the last inequality).}
 \end{enumerate}
