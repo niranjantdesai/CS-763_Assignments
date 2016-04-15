@@ -1,5 +1,8 @@
 % Reading data and converting to patches
 
+tic
+
+%% Init
 inpImg = im2double(imresize(imread('../data/barbara256.png'),0.25));
 temp = zeros(size(inpImg));
 
@@ -9,7 +12,7 @@ x = im2col(inpImg,[patchSize patchSize],'sliding');
 
 % generating phi matrix
 n = 64;
-phi = randn(64,64);
+phi = randn(n,n);
 
 % 2D dct matrix
 U = kron(dctmtx(8)' , dctmtx(8)');
@@ -25,6 +28,7 @@ msie_omp = zeros(L,1);
 mspe_pinv = zeros(L,1);
 msie_pinv = zeros(L,1);
 
+%% Calc
 for i=1:L
    % Calculating y and A
    f = f_array(i);
@@ -41,14 +45,44 @@ for i=1:L
    
    cols = size(y,2);
    
-   
-   for j=1:cols
+   % Using OMP
+   parfor j=1:cols
        [S,~] = PerformOMP(y(:,j),A);
        theta(:,j) = S;
    end
    x_est = U*theta;
-   img_est = mexCombinePatches(x_est,temp,patchSize,1,0,1);
-   figure()
-   imshow(img_est);
+   img_est = mexCombinePatches(x_est,temp,patchSize,1,1,1);
+   
+   mspe_omp(i) = sumsqr(x-x_est)/length(x_est);
+   msie_omp(i) = sumsqr(inpImg - img_est)/length(inpImg);
+   
+   % Using pinv
+   x_est = A\y;
+   img_est = mexCombinePatches(x_est,temp,patchSize,1,1,1);
+   
+   mspe_pinv(i) = sumsqr(x-x_est)/length(x_est);
+   msie_pinv(i) = sumsqr(inpImg - img_est)/length(inpImg);
    
 end
+
+%% Plotting
+figure(1)
+plot(f_array,mspe_omp);
+title('Mean squared patch error (OMP)');
+
+figure(2)
+plot(f_array,msie_omp);
+title('Mean squared image error (OMP)');
+
+figure(3)
+plot(f_array,mspe_pinv);
+title('Mean squared patch error (PINV)');
+
+figure(4)
+plot(f_array,msie_pinv);
+title('Mean squared image error (PINV)');
+
+toc
+
+% save('workspace.mat');
+
