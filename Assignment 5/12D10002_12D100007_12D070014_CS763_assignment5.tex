@@ -175,7 +175,10 @@ As $T_j$'s are mutually exclusive, we can write $\mathbf{h} = \mathbf{h}_{T_0} +
 Adding the above inequalities gives us the last inequality.
 }
 \item Rearranging the terms now gives us $\|\mathbf{h}_{{(T_0)}^c}\|_1 \leq \|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}_{{(T_0)^c}}\|_1 = \|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}-\mathbf{x_s}\|_1$. 
-\item Combining everything, we now have $\|\mathbf{h}_{(T_0 \cup T_1)^c}\|_2 \leq s^{-1/2}(\|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}-\mathbf{x_s}\|_1) \leq \|\mathbf{h}_{{(T_0)}}\|_2 + 2s^{-1/2} \|\mathbf{x}-\mathbf{x_s}\|_1$. \textcolor{blue}{(Prove the last inequality).}
+\item Combining everything, we now have $\|\mathbf{h}_{(T_0 \cup T_1)^c}\|_2 \leq s^{-1/2}(\|\mathbf{h}_{{(T_0)}}\|_1  + 2\|\mathbf{x}-\mathbf{x_s}\|_1) \leq \|\mathbf{h}_{{(T_0)}}\|_2 + 2s^{-1/2} \|\mathbf{x}-\mathbf{x_s}\|_1$. \textcolor{blue}{(Prove the last inequality).}\\
+\textcolor{blue}{
+We have to show that $s^{-1/2}\|\mathbf{h}_{{(T_0)}}\|_1 \leq \|\mathbf{h}_{{(T_0)}}\|_2$. Define $\mathbf{a}$ as follows: it has the same length as $\mathbf{h}_{{(T_0)}}$ with zeros everywhere except at those indices where $\mathbf{h}_{{(T_0)}}$ is non-zero. At these indices, $\mathbf{a}$ has value $s^{-1}$. Also define $\tilde{\mathbf{h}_{{(T_0)}}}$ as follows: it has the absolute values of elements in $\mathbf{h}_{{(T_0)}}$ at the same indices. Using the Cauchy-Schwartz inequality, $\langle \mathbf{a},\tilde{\mathbf{h}_{{(T_0)}}}\rangle \leq |\langle \mathbf{a},\tilde{\mathbf{h}_{{(T_0)}}}\rangle| \leq \|\mathbf{a}\|_2\|\tilde{\mathbf{h}_{{(T_0)}}}\|_2$. Now, $\langle \mathbf{a},\tilde{\mathbf{h}_{{(T_0)}}}\rangle = s^{-1}\|\mathbf{h}_{(T_0)}\|_1$, $\|\mathbf{a}\|_2 = s^{-1/2}$ and $\|\tilde{\mathbf{h}_{{(T_0)}}}\|_2 = \|\mathbf{h}_{{(T_0)}}\|_2$. Thus, $s^{-1}\|\mathbf{h}_{(T_0)}\|_1 \leq s^{-1/2}\|\mathbf{h}_{{(T_0)}}\|_2$ or $s^{-1/2}\|\mathbf{h}_{{(T_0)}}\|_1 \leq \|\mathbf{h}_{{(T_0)}}\|_2$, giving us the last inequality.
+}
 \end{enumerate}
 \item We will now prove the bound on $\|\mathbf{h}_{(T_0 \cup T_1)}\|_2$, in the following way. 
 \begin{enumerate}
