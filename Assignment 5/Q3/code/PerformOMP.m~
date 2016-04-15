@@ -1,0 +1,26 @@
+function [ S,a ] = PerformOMP( y,A )
+% Single column vector for y
+    
+% initializing for OMP
+r = y;
+s = 0;
+
+eps = 1e-5;
+index_selected = false(A(s,2),size(y,2));
+
+while (sumsqr(r)>eps)
+    corr = r'A;
+    norm_A = repmat(sum(sqr(A)),size(corr,1),1);
+    
+    corr = corr./normA;
+    
+    [max_A,idx_A] = max(corr,[],2);
+    
+    index_selected(idx_A) = true;
+    
+    S = pinv(A(:,index_selected)*y;
+    
+    r = y-A(:,i
+
+end
+
