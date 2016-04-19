@@ -2,6 +2,9 @@
 
 tic
 
+% NOTE: the code takes ~15 minutes to run
+
+
 %% Init
 inpImg = im2double(imresize(imread('../data/barbara256.png'),0.25));
 temp = zeros(size(inpImg));
