@@ -1,0 +1,11 @@
+*ICP
+- converges only if starting poses are close enough
+- estimating motion: how does pseudoinverse ensure that the first two entries in the last row are 0?
+- value of threshold?
+
+*RPM
+- final correspondences always one-to-one, unlike ICP
+- what is ep?
+- works well in presence of noise, outliers
+- determines both correspondence and pose simultaneously
+- gamma and alpha can be set using max likelihood (46)
