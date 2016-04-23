@@ -32,11 +32,12 @@
 import numpy as np
 import scipy.ndimage as nd
 import matplotlib.pyplot as plt
+import cv2
 
 eps = np.finfo(float).eps
 
 
-def chanvese(img, init_mask, max_its=200, alpha=0.2,
+def chanvese(img, init_mask, max_its=200, mu=0.2, lambda1=1.0, lambda2=1.0, kappa=0.0,
              thresh=0, color='r', display=False):
     img_height, img_width, num_channels = img.shape
     img = img.astype(np.float)
@@ -55,6 +56,8 @@ def chanvese(img, init_mask, max_its=200, alpha=0.2,
     stop = False
     prev_mask = init_mask
     c = 0
+    F = 0
+    curvature = 0
 
     while its < max_its and not stop:
         # Get the curve's narrow band
@@ -66,6 +69,12 @@ def chanvese(img, init_mask, max_its=200, alpha=0.2,
                 if np.mod(its, 50) == 0:
                     print('iteration: {0}'.format(its))
                     show_curve_and_phi(fig, img, phi, color)
+
+                    # print("max var force = %f" % (np.max(F / 2)))
+                    # print("max curvature force = %f" % (np.max(curvature)))
+                    # #
+                    # input("Press Enter to continue.")
+
             else:
                 if np.mod(its, 10) == 0:
                     print('iteration: {0}'.format(its))
@@ -74,8 +83,8 @@ def chanvese(img, init_mask, max_its=200, alpha=0.2,
             upts = phi <= 0  # interior points
             vpts = phi > 0  # exterior points
 
-            #print(upts.shape)
-            #print(len(upts))
+            # print(upts.shape)
+            # print(len(upts))
 
             u = np.empty(num_channels)
             v = np.empty(num_channels)
@@ -89,21 +98,23 @@ def chanvese(img, init_mask, max_its=200, alpha=0.2,
 
 
             # Force from image information
-
             F = np.zeros(len(idx))
             for i in range(num_channels):
                 temp = img[:, :, i]
-            # F = F + np.power(temp.flat[idx] - u[i], 2) - np.power(temp.flat[idx] - v[i], 2)
-            F = F - np.power(temp.flat[idx] - v[i], 2)
+                # F = F + np.power(temp.flat[idx] - u[i], 2) - np.power(temp.flat[idx] - v[i], 2)
+                F = F - lambda1 * np.power(temp.flat[idx] - v[i], 2) / 3 + lambda2 * np.power(temp.flat[idx] - u[i],
+                                                                                              2) / 3
+
             # Force from curvature penalty
             curvature = get_curvature(phi, idx)
 
 
             # Gradient descent to minimize energy
-            dphidt = F / np.max(np.abs(F)) + alpha * curvature
+            dphidt = F + mu * curvature - kappa
 
             # Maintain the CFL condition
-            dt = 0.45 / (np.max(np.abs(dphidt)) + eps)
+            #dt = 0.45 / (np.max(np.abs(dphidt)) + eps)
+            dt = 0.05
 
             # Evolve the curve
             phi.flat[idx] += dt * dphidt
@@ -282,19 +293,27 @@ def convergence(p_mask, n_mask, thresh, c):
 
 
 if __name__ == "__main__":
-    img = nd.imread('../../data/temp/1.jpg', flatten=False)
+    img = cv2.imread('../../data/temp/1.jpg', cv2.IMREAD_COLOR)
+
+    # performing bilaterial filtering
+    img_filt = im2double(cv2.bilateralFilter(img, 9, 75, 75))
 
     print(img.shape)
-    img_height, img_width, num_channels = img.shape
+    img_height, img_width, num_channels = img_filt.shape
 
     mask = np.zeros((img_height, img_width))
     print(mask.shape)
 
     # initialize at the center
-    window_width = min(img_width, img_height) / 10
+    window_width = min(img_width, img_height) / 5
     center_x = int(img_height / 2)
     center_y = int(img_width / 2)
 
     mask[center_x - window_width:center_x + window_width, center_y - window_width:center_y + window_width] = 1
 
-    chanvese(img, mask, max_its=1500, display=True, alpha=0.1)
+    mu = 0  # curve length
+    kappa = -0.5 # area of foreground
+    lambda1 = 5  # variance of background
+    lambda2 = 0
+
+    chanvese(img_filt, mask, max_its=1500, display=True, mu=mu, lambda1=lambda1, lambda2=lambda2, kappa=kappa)
