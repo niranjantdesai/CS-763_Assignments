@@ -9,7 +9,7 @@ close all;
 %% Load data
 load('../data/ellipsePointsets.mat');
 X = pointSets(:,:,1);
-Y = pointSets(:,:,2);
+Y = pointSets(:,:,50);
 figure()
 hold on
 scatter(X(1,:),X(2,:));
