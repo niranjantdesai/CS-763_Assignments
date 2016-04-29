@@ -1,5 +1,6 @@
 % 18th April, 2016
 % Authors: Ayush Baid, Niranjan Thakurdesai, Jainesh Doshi
+% Reference: Besl, Paul J., and Neil D. McKay. "Method for registration of 3-D shapes." Robotics-DL tentative. International Society for Optics and Photonics, 1992.
 
 function [ A ] = icp( P,X )
 %icp This function registers two point sets using the iterated closest
@@ -20,13 +21,13 @@ Nx = size(X,2);
 P_iter = P;
 A = eye(3);
 i=0;    % Iteration count
-threshold = 0.1;    % Threshold for mse; stop iterating when mse falls below this
+threshold = 1e-4;    % Threshold for mse; stop iterating when mse falls below this
 maxIters = 25;
-mse = NaN;
+mse = 1e6;
 
 while (i<maxIters && mse>threshold)
     % Compute closest points
-    [idx,~] = knnsearch(X',P_iter');
+    [idx,~] = knnsearch(X(1:2,:)',P_iter(1:2,:)');
     Y = X(:,idx);
     
     % Compute the registration
