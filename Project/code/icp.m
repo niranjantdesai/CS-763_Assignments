@@ -17,6 +17,14 @@ function [ A ] = icp( P,X )
 Np = size(P,2);
 Nx = size(X,2);
 
+% ** Converting to homogenous coordinates**
+if size(P,1)==2
+    P = [P; ones(1,Np)];
+end
+if size(X,1)==2
+    X = [X; ones(1,Nx)];
+end
+
 % Initialization
 P_iter = P;
 A = eye(3);
@@ -31,7 +39,7 @@ while (i<maxIters && mse>threshold)
     Y = X(:,idx);
     
     % Compute the registration
-    A = Y*P'*inv(P*P');
+    A = (Y*P')/(P*P');
     
     % Apply the registration
     P_iter = A*P;

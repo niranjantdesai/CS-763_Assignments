@@ -14,7 +14,7 @@ dirIndex = [dirData.isdir];
 fileNames = {dirData(~dirIndex).name}'; % gets the list of all the files
     
 L = size(fileNames,1);
-dataSet = cell(L);
+dataSet1 = cell(L,1);
     
 % looping over the image files
 for i=1:L
@@ -22,13 +22,13 @@ for i=1:L
    mask = inpMask(:,:,1)>0;
    
    [pointSet, pointSetImage] = ProcessMask( mask );
-   
-   dataSet{i} = pointSet;
+   pointSet = PreshapeConvert(pointSet);
+   dataSet1{i} = pointSet;
    imwrite(pointSetImage,strcat(resultPath,num2str(i),'.png'));
    
 end
 
-save(strcat(resultPath,'dataset.mat'),'dataSet');
+save(strcat(resultPath,'dataset.mat'),'dataSet1');
 
 
 %% Processing for species 2
@@ -40,7 +40,7 @@ dirIndex = [dirData.isdir];
 fileNames = {dirData(~dirIndex).name}'; % gets the list of all the files
     
 L = size(fileNames,1);
-dataSet = cell(L);
+dataSet2 = cell(L,1);
     
 % looping over the image files
 for i=1:L
@@ -48,13 +48,13 @@ for i=1:L
    mask = inpMask(:,:,1)>0;
    
    [pointSet, pointSetImage] = ProcessMask( mask );
-   
-   dataSet{i} = pointSet;
+   pointSet = PreshapeConvert(pointSet);
+   dataSet2{i} = pointSet;
    imwrite(pointSetImage,strcat(resultPath,num2str(i),'.png'));
    
 end
 
-save(strcat(resultPath,'dataset.mat'),'dataSet');
+save(strcat(resultPath,'dataset.mat'),'dataSet2');
 
 
 %% Processing for species 3
@@ -66,7 +66,7 @@ dirIndex = [dirData.isdir];
 fileNames = {dirData(~dirIndex).name}'; % gets the list of all the files
     
 L = size(fileNames,1);
-dataSet = cell(L);
+dataSet3 = cell(L,1);
     
 % looping over the image files
 for i=1:L
@@ -74,13 +74,14 @@ for i=1:L
    mask = inpMask(:,:,1)>0;
    
    [pointSet, pointSetImage] = ProcessMask( mask );
+   pointSet = PreshapeConvert(pointSet);
    
-   dataSet{i} = pointSet;
+   dataSet3{i} = pointSet;
    imwrite(pointSetImage,strcat(resultPath,num2str(i),'.png'));
    
 end
 
-save(strcat(resultPath,'dataset.mat'),'dataSet');
+save(strcat(resultPath,'dataset.mat'),'dataSet3');
 
 
 
