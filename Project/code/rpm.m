@@ -29,7 +29,7 @@ betar = 1.075;
 ep = 1e-1;
 ep1 = 0.005;
 ep2 = 0.05;
-gamma0 = 40;
+gamma0 = 1000;
 
 
 beta = beta0;
@@ -38,7 +38,7 @@ gamma = gamma0;
 betaf = 0.2;
 I0 = 4;
 I1 = 30;
-alpha = 0.03;
+alpha = 60;
 iters1 = 0;
 iters2 = 0;
 maxItersNewton = 25;    % Maximum number of iterations for Newton's method

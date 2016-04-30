@@ -59,37 +59,9 @@ repSet1 = dataSet1{repIdx1};
 repSet2 = dataSet2{repIdx2};
 repSet3 = dataSet3{repIdx3};
 
-%% Using ICP
+% ** Using ICP **
 
-% % * Species 1
-% L = length(dataSet1);
-% recog1 = zeros(L,1);
-% for i=1:L
-%     if i==repIdx1
-%         continue
-%     end
-%     X = dataSet1{i};
-%     if size(X,2)==2
-%         X = [X, ones(size(X,1),1)];
-%     end
-%     A = icp(X',repSet1');
-%     
-%     alignedpointSet = (A*X').';
-%     
-%     figure();
-%     hold on;
-%     scatter(X(:,1),X(:,2));
-%     scatter(repSet1(:,1), repSet1(:,2));
-%     scatter(alignedpointSet(:,1), alignedpointSet(:,2));
-% 
-%     hold off;
-%     legend('original pts', 'rep #1 pts', 'aligned pts');
-% end
-
-
-%% Using RPM
-
-% * Species 1
+%% Species 1 with rep1
 L = length(dataSet1);
 recog1 = zeros(L,1);
 for i=1:L
@@ -97,6 +69,82 @@ for i=1:L
         continue
     end
     X = dataSet1{i};
+    if size(X,2)==2
+        X = [X, ones(size(X,1),1)];
+    end
+    A = icp(X',repSet1');
+    
+    alignedpointSet = (A*X').';
+    
+    figure();
+    hold on;
+    scatter(X(:,1),X(:,2));
+    scatter(repSet1(:,1), repSet1(:,2));
+    scatter(alignedpointSet(:,1), alignedpointSet(:,2));
+
+    hold off;
+    legend('original pts', 'rep #1 pts', 'aligned pts');
+end
+
+%% Species 2 with rep1
+L = length(dataSet2);
+recog2 = zeros(2,1);
+for i=1:L
+    if i==repIdx1
+        continue
+    end
+    X = dataSet2{i};
+    if size(X,2)==2
+        X = [X, ones(size(X,1),1)];
+    end
+    A = icp(X',repSet1');
+    
+    alignedpointSet = (A*X').';
+    
+    figure();
+    hold on;
+    scatter(X(:,1),X(:,2));
+    scatter(repSet1(:,1), repSet1(:,2));
+    scatter(alignedpointSet(:,1), alignedpointSet(:,2));
+
+    hold off;
+    legend('original pts', 'rep #1 pts', 'aligned pts');
+end
+
+
+
+% ** Using RPM **
+
+%% Species 1 with rep 1
+L = length(dataSet1);
+recog1 = zeros(L,1);
+for i=1:L
+    if i==repIdx1
+        continue
+    end
+    X = dataSet1{i};
+    
+    [A,t] = rpm(X',repSet1');
+    
+    alignedpointSet = (A*X' + repmat(t,1,size(X,1))).';
+    
+    figure();
+    hold on;
+    scatter(X(:,1),X(:,2));
+    scatter(repSet1(:,1), repSet1(:,2));
+    scatter(alignedpointSet(:,1), alignedpointSet(:,2));
+    hold off;
+    legend('original pts', 'rep #1 pts', 'aligned pts');
+end
+
+%% Species 2 with rep 1
+L = length(dataSet2);
+recog1 = zeros(L,1);
+for i=1:L
+    if i==repIdx1
+        continue
+    end
+    X = dataSet2{i};
     
     [A,t] = rpm(X',repSet1');
     
