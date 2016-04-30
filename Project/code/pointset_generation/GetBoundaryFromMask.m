@@ -21,7 +21,7 @@ distance = bwdist(diff);
 distance(mask_img) = -distance(mask_img);
 
 % ** smoothing the distance transform **
-smooth_distance = imgaussfilt(distance,1);
+smooth_distance = imgaussfilt(distance,4);
 
 % figure();
 % subplot(121);
@@ -79,6 +79,18 @@ neighbor_submat = not_selected(prev_x-1:prev_x+1, prev_y-1:prev_y+1);
 final_submatrix = search_matrix.*neighbor_submat;
 
 [pos_x, pos_y] = find(final_submatrix, 1);
+
+if isempty(pos_x)
+    neighbor_submat = ~neighbor_submat;
+    final_submatrix = search_matrix.*neighbor_submat;
+    [pos_x, pos_y] = find(final_submatrix, 1);
+    
+    if isempty(pos_x)
+        disp('Pathological case #1 in Getting booundary');
+        return
+    end
+end
+
 next_x = prev_x + pos_x - 2;
 next_y = prev_y + pos_y - 2;
 sorted_idx_x(2) = next_x;
@@ -101,8 +113,9 @@ for i=3:N
         % pick only from the 4-neighborhood
         neighbor_submat = search_matrix.*neighbor_submat;
         if(sum(sum(neighbor_submat))>1)
-            disp('>1 available');
-            disp(i);
+            disp('>1 neighbor available');
+            disp('Pathological case #2 in Getting booundary');
+            return
         end
     end
     final_submatrix = neighbor_submat;

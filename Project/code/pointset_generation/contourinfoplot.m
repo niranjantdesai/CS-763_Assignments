@@ -96,7 +96,7 @@ xnormals = [x(1:N), x(1:N) + needlesize*normalmap(:,1)];
 ynormals = [y(1:N), y(1:N) + needlesize*normalmap(:,2)];
 
 % plot
-figure()
-hold on
-plot(y,x,'r')
+% figure()
+% hold on
+% plot(y,x,'r')
 %plot(xnormals', ynormals', 'k-')

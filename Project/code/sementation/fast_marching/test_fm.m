@@ -1,4 +1,4 @@
-img = im2double(imread('../../data/temp/1.jpg'));
+img = im2double(imread('../../../data/temp/1.jpg'));
 
 % getting the stats for the background
 windowX = floor(min(50,size(img,1)/8));
