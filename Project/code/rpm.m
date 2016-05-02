@@ -29,7 +29,7 @@ betar = 1.075;
 ep = 1e-1;
 ep1 = 0.005;
 ep2 = 0.05;
-gamma0 = 1000;
+gamma0 = 2000;
 
 
 beta = beta0;
